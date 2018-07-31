@@ -1,0 +1,79 @@
+# -*- coding: utf-8 -*-
+# Author: XuMing <xuming624@qq.com>
+# Brief: 
+
+import kenlm
+from util.io_util import get_logger
+from model.lexer import Lexer
+
+default_logger = get_logger(__file__)
+
+
+class LM(object):
+    def __init__(self, language_model_path=None):
+        if language_model_path:
+            self.model = kenlm.Model(language_model_path)
+            default_logger.info('Loaded language model from {}'.format(language_model_path))
+        else:
+            raise Exception('lm model need.')
+
+    def get_ngram_score(self, words):
+        """
+        取n元文法得分
+        :param words: list, 以词或字切分
+        :param mode:
+        :return:
+        """
+        return self.model.score(' '.join(words), bos=False, eos=False)
+
+    def get_ppl_score(self, words):
+        """
+        取语言模型困惑度得分，越小句子越通顺
+        :param words: list, 以词或字切分
+        :param mode:
+        :return:
+        """
+        return self.model.perplexity(' '.join(words))
+
+    def check(self, text):
+        """
+        Args:
+            text: 床前明月光
+        Returns:
+        {
+          "text": "床前明月光",
+          "items": [
+            {
+              "word": "床",
+              "prob": 0.0000385273
+            },
+            {
+              "word": "前",
+              "prob": 0.0289018
+            },
+            {
+              "word": "明月",
+              "prob": 0.0284406
+            },
+            {
+              "word": "光",
+              "prob": 0.808029
+            }
+          ],
+          "ppl": 79.0651
+        }
+        """
+        result_dict = {"text": text}
+        lexer = Lexer()
+        lexer_result = lexer.check(text)
+        # get ppl with char segment
+        ppl_score = self.get_ppl_score(list(text))
+        items_list = []
+        for item in lexer_result['items']:
+            items = dict()
+            items["word"] = item['item']
+            items["prob"] = self.get_ngram_score(item['item'])
+            items_list.append(items)
+        result_dict['items'] = items_list
+        result_dict['ppl'] = ppl_score
+        return result_dict

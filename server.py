@@ -2,17 +2,16 @@
 # Author: XuMing <xuming624@qq.com>
 # Brief:
 import sys
-import logging
 from flask import Flask, request, redirect, url_for, jsonify
 from flask_cors import CORS
 from app.nlp_controller import NlpController
+from util.io_util import get_logger
 
+default_logger = get_logger(__file__)
 # define the app
 app = Flask(__name__)
 CORS(app)  # needed for cross-domain requests, allow everything by default
 
-app.logger.addHandler(logging.StreamHandler(sys.stdout))
-app.logger.setLevel(logging.INFO)
 api_key = None
 
 
@@ -27,10 +26,30 @@ def index():
 @app.route('/lexer_api', methods=['POST'])
 def lexer_api():
     input_data = request.json
-    app.logger.info("api_input: " + input_data)
+    default_logger.info("api_input: " + input_data)
     controller = NlpController(model_type='lexer', require_auth=False)
     output_data = controller.output(input_data)
-    app.logger.info("api_output: " + output_data['input'] + '\t' + output_data['output'])
+    default_logger.info("api_output: " + output_data['output'])
+    return jsonify(output_data)
+
+
+@app.route('/lm_api', methods=['POST'])
+def lm_api():
+    input_data = request.json
+    default_logger.info("api_input: " + input_data)
+    controller = NlpController(model_type='lm', require_auth=False)
+    output_data = controller.output(input_data)
+    default_logger.info("api_output: " + output_data['output'])
+    return jsonify(output_data)
+
+
+@app.route('/wordemb_api', methods=['POST'])
+def wordemb_api():
+    input_data = request.json
+    default_logger.info("api_input: " + input_data)
+    controller = NlpController(model_type='wordemb', require_auth=False)
+    output_data = controller.output(input_data)
+    default_logger.info("api_output: " + output_data['output'])
     return jsonify(output_data)
 
 

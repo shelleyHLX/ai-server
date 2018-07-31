@@ -9,11 +9,8 @@ __all__ = ["Lexer"]
 
 
 class Lexer(object):
-    def __init__(self, **model_paths):
-        self.is_init = False
-
-        custom_dict_path = model_paths['custom_dict_path']
-        if custom_dict_path and not self.is_init:
+    def __init__(self, custom_dict_path=None):
+        if custom_dict_path:
             jieba.load_userdict(custom_dict_path)
 
     def check(self, text):

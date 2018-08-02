@@ -15,8 +15,8 @@ label_revserv_dict = {0: '人类作者',
 
 
 class Topic(InferCNN):
-    def __init__(self, topic_model_path, topic_word_dict_path):
-        super(Topic, self).__init__(topic_model_path, topic_word_dict_path)
+    def __init__(self, model_path, word_dict_path, maxlen=400):
+        super(Topic, self).__init__(model_path, word_dict_path, maxlen)
         self.name = 'topic'
 
     def get_topic(self, text):

@@ -2,8 +2,6 @@
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
 
-import numpy as np
-
 from model.keras_model.infer import InferCNN
 from util.io_util import get_logger
 
@@ -11,8 +9,8 @@ default_logger = get_logger(__file__)
 
 
 class Sentiment(InferCNN):
-    def __init__(self, topic_model_path, topic_word_dict_path):
-        super(Sentiment, self).__init__(topic_model_path, topic_word_dict_path)
+    def __init__(self, model_path, word_dict_path, maxlen=300):
+        super(Sentiment, self).__init__(model_path, word_dict_path, maxlen=maxlen)
         self.name = 'sentiment_classify'
 
     def get_sentiment_prob(self, text):
@@ -20,29 +18,25 @@ class Sentiment(InferCNN):
         probs_dict = dict((idx, prob) for idx, prob in enumerate(probs))
         return probs_dict
 
-    def get_sentiment(self, pos_prob, neg_prob):
+    def get_sentiment_confidence(self, pos_prob, pos_threshold=0.65, neg_threshold=0.45):
         """
         Get sentiment score
         :param pos_prob:
-        :param neg_prob:
+        :param pos_threshold:
+        :param neg_threshold:
         :return: 表示情感极性分类结果，0:负向，1:中性，2:正向
         """
-        if pos_prob > neg_prob + 0.1:
+        if pos_prob > pos_threshold:
             sentiment = 2
-        elif neg_prob > pos_prob + 0.1:
+            confidence = (pos_prob - pos_threshold) / (1 - pos_threshold)
+        elif pos_prob < neg_threshold:
             sentiment = 0
+            confidence = (neg_threshold - pos_prob) / neg_threshold
         else:
             sentiment = 1
-        return sentiment
-
-    def get_sentiment_confidence(self, pos_prob, neg_prob, sentiment):
-        if sentiment == 0:
-            confidence = pos_prob / 0.4
-        elif sentiment == 1:
-            confidence = np.abs(pos_prob - 0.5) / 0.1
-        else:
-            confidence = (pos_prob - 0.6) / 0.4
-        return confidence
+            gap = pos_threshold - pos_prob if pos_prob > 0.5 else pos_prob - neg_threshold
+            confidence = gap / (pos_threshold - 0.5)
+        return sentiment, confidence
 
     def check(self, text):
         """
@@ -64,11 +58,9 @@ class Sentiment(InferCNN):
         result_dict = {"text": text}
         probs_dict = self.get_sentiment_prob(text)
         neg_prob, pos_prob = probs_dict[0], probs_dict[1]
-        sentiment = self.get_sentiment(pos_prob, neg_prob)
         items = dict()
         items["positive_prob"] = pos_prob
         items["negative_prob"] = neg_prob
-        items['sentiment'] = sentiment
-        items['confidence'] = self.get_sentiment_confidence(pos_prob, neg_prob, sentiment)
+        items['sentiment'], items['confidence'] = self.get_sentiment_confidence(pos_prob)
         result_dict['items'] = [items]
         return result_dict

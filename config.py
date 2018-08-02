@@ -20,6 +20,6 @@ topic_model_path = './data/mcnn_model.h5'
 topic_word_dict_path = './data/mcnn_vocab.txt'
 
 # sentiment classify model
-sentiment_model_path = './data/sentiment_model.h5'
-sentiment_word_dict_path = './data/sentiment_vocab.txt'
+sentiment_model_path = './data/sentiment_hotel_model.h5'
+sentiment_word_dict_path = './data/sentiment_hotel_vocab.txt'
 

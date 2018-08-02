@@ -8,7 +8,7 @@ import numpy as np
 def vectorize_words(words, word_idx):
     inputs = []
     for word in words:
-        inputs.append([word_idx[w] for w in word])
+        inputs.append([word_idx[w] for w in word if w in word_idx])
     return inputs
 
 

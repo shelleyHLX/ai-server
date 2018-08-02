@@ -15,7 +15,7 @@
             <div class="card-body" style="padding-bottom: 0.2cm">
                 <input class="card-title form-control" type="text" id="input" name="input"
                        placeholder="Input sentence"/>
-                <button class="card-text btn btn-outline-primary" id="btn">文章分类</button>
+                <button class="card-text btn btn-outline-primary" id="btn">情感倾向</button>
                 <div class="spinner" id="spinner" style="display: none">
                     <div class="double-bounce1"></div>
                     <div class="double-bounce2"></div>
@@ -23,8 +23,8 @@
             </div>
             <div class="card-footer bg-white">
                     <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
-                        <div class="item" id="api_input">苹果是一家伟大的公司</div>
-                        <div class="item" id="api_output">sentiment:2 positive_prob:0.73 negative_prob:0.27</div>
+                        <div class="item" id="api_input">不错，在同等档次酒店中应该值得推荐的！</div>
+                        <div class="item" id="api_output">sentiment:2 positive_prob:0.81 negative_prob:0.18</div>
                     </pre>
             </div>
         </div>
@@ -65,7 +65,7 @@
 
                 console.log(errorThrown);
             },
-            timeout: 0 // sets timeout to 10 seconds
+            timeout: 20000 // sets timeout to 10 seconds
         });
 
     }

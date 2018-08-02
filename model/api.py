@@ -2,7 +2,7 @@
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
 
-from model import lexer, lm, word_emb, word_sim_emb, short_text_sim, keyword, topic
+from model import lexer, lm, word_emb, word_sim_emb, short_text_sim, keyword, topic, sentiment_classify
 
 import config
 
@@ -25,6 +25,8 @@ class API(object):
             self.model = keyword.Keyword()
         elif model_type == 'topic':
             self.model = topic.Topic(config.topic_model_path, config.topic_word_dict_path)
+        elif model_type == 'sentimentclassify':
+            self.model = sentiment_classify.Sentiment(config.topic_model_path, config.topic_word_dict_path)
 
     def generate_output_data(self, input_data=''):
         out = ''
@@ -57,6 +59,12 @@ class API(object):
                 items = check_ret['items']
                 for item in items:
                     out += item['tag'] + '/' + str(item['score']) + ' '
+        elif self.model_type == 'sentimentclassify':
+            if check_ret:
+                items = check_ret['items']
+                for item in items:
+                    out = 'sentiment: ' + str(item['sentiment']) + ' postive_prob: ' + \
+                          str(item['postive_prob']) + ' negative_prob: ' + str(item['negative_prob'])
         return out
 
     def get_model_output(self, input_data=''):

@@ -3,29 +3,27 @@
 # Brief: 
 
 from util.io_util import get_logger
-from .lexer import Lexer
-from gensim import corpora
-from gensim import models
-import numpy as np
+from model.keras_model.infer import InferCNN
+import operator
 
 default_logger = get_logger(__file__)
 
+label_revserv_dict = {0: '人类作者',
+                      1: '机器作者',
+                      2: '机器翻译',
+                      3: '自动摘要'}
 
-class Topic(Lexer):
-    def __init__(self, lda_path=None):
-        super(Topic, self).__init__()
-        if lda_path:
-            self.model = models.LdaModel.load(fname=lda_path)
-            default_logger.info('Loaded lda model from {}'.format(lda_path))
-        else:
-            raise Exception('need lda model file.')
+
+class Topic(InferCNN):
+    def __init__(self, topic_model_path, topic_word_dict_path):
+        super(Topic, self).__init__(topic_model_path, topic_word_dict_path)
         self.name = 'topic'
 
     def get_topic(self, text):
-        topics = []
-        words = self.lexer_model.lcut(text)
-
-        return topics
+        topic_probs = self.infer(text)
+        topic_probs_dict = dict((idx, prob) for idx, prob in enumerate(topic_probs))
+        topic_probs_order_dict = sorted(topic_probs_dict.items(), key=operator.itemgetter(1), reverse=True)
+        return topic_probs_order_dict
 
     def check(self, text):
         """
@@ -59,12 +57,15 @@ class Topic(Lexer):
         }
         """
         result_dict = {"text": text}
-        keywords = self.get_topic(text)
+        topics = self.get_topic(text)
         items_list = []
-        for w, s in keywords:
+        for idx, prob in topics:
+            # get top 3
+            if len(items_list) > 2:
+                continue
             items = dict()
-            items["score"] = s
-            items["tag"] = w
+            items["score"] = prob
+            items["tag"] = label_revserv_dict[idx]
             items_list.append(items)
         result_dict['items'] = items_list
         return result_dict

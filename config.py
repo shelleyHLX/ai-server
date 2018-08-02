@@ -16,5 +16,5 @@ language_model_path = './data/people_chars_lm.klm'
 emb_path = './data/sentence_w2v.bin'
 
 # topic model path
-lda_path = './data/lda.model'
-stop_words_path = './data/stop_words.txt'
+topic_model_path = './data/mcnn_model.h5'
+topic_word_dict_path = './data/mcnn_vocab.txt'

@@ -2,7 +2,7 @@
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
 
-from model import lexer, lm, word_emb, word_sim_emb, short_text_sim, keyword
+from model import lexer, lm, word_emb, word_sim_emb, short_text_sim, keyword, topic
 
 import config
 
@@ -23,6 +23,8 @@ class API(object):
             self.model = short_text_sim.ShortTextSim(emb_path=config.emb_path)
         elif model_type == 'keyword':
             self.model = keyword.Keyword()
+        elif model_type == 'topic':
+            self.model = topic.Topic(config.topic_model_path, config.topic_word_dict_path)
 
     def generate_output_data(self, input_data=''):
         out = ''
@@ -50,6 +52,11 @@ class API(object):
                 items = check_ret['items']
                 for item in items:
                     out += item['tag'] + ' '
+        elif self.model_type == 'topic':
+            if check_ret:
+                items = check_ret['items']
+                for item in items:
+                    out += item['tag'] + '/' + str(item['score']) + ' '
         return out
 
     def get_model_output(self, input_data=''):

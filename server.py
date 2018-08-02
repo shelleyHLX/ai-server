@@ -83,6 +83,16 @@ def keyword_api():
     return jsonify(output_data)
 
 
+@app.route('/topic_api', methods=['POST'])
+def topic_api():
+    input_data = request.json
+    default_logger.info("api_input: " + input_data)
+    controller = NlpController(model_type='topic', require_auth=False)
+    output_data = controller.output(input_data)
+    default_logger.info("api_output: " + output_data['output'])
+    return jsonify(output_data)
+
+
 # HTTP Errors handlers
 @app.errorhandler(404)
 def url_error(e):

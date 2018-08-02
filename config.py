@@ -9,7 +9,12 @@ secret_key = [
 # custom dict for segment
 custom_dict_path = './data/custom_words.txt'
 
-# kenlm language model
+# kenlm language lexer_model
 language_model_path = './data/people_chars_lm.klm'
 
-emb_path = './data/glove.6B.300d.trimmed.npz'
+# word embedding file path
+emb_path = './data/sentence_w2v.bin'
+
+# topic model path
+lda_path = './data/lda.model'
+stop_words_path = './data/stop_words.txt'

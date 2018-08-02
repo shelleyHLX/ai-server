@@ -4,14 +4,23 @@
 
 import jieba
 import jieba.posseg
+import jieba.analyse
 
 __all__ = ["Lexer"]
 
 
 class Lexer(object):
     def __init__(self, custom_dict_path=None):
+        self.lexer_model = jieba
         if custom_dict_path:
-            jieba.load_userdict(custom_dict_path)
+            self.lexer_model.load_userdict(custom_dict_path)
+        self.lexer_model_analyse = jieba.analyse
+
+    def posseg(self, text):
+        return self.lexer_model.posseg.cut(text)
+
+    def seg(self, text):
+        return self.lexer_model.cut(text)
 
     def check(self, text):
         """
@@ -35,7 +44,7 @@ class Lexer(object):
         }
         """
         result_dict = {"text": text}
-        words = jieba.posseg.cut(text)
+        words = self.posseg(text)
         items_list = []
         idx = 0
         for w in words:

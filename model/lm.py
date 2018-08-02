@@ -4,18 +4,20 @@
 
 import kenlm
 from util.io_util import get_logger
-from model.lexer import Lexer
+from .lexer import Lexer
 
 default_logger = get_logger(__file__)
 
 
-class LM(object):
+class LM(Lexer):
     def __init__(self, language_model_path=None):
+        super(LM, self).__init__()
+        self.name = 'lm'
         if language_model_path:
             self.model = kenlm.Model(language_model_path)
-            default_logger.info('Loaded language model from {}'.format(language_model_path))
+            default_logger.info('Loaded language lexer_model from {}'.format(language_model_path))
         else:
-            raise Exception('lm model need.')
+            raise Exception('lm lexer_model need.')
 
     def get_ngram_score(self, words):
         """
@@ -64,15 +66,13 @@ class LM(object):
         }
         """
         result_dict = {"text": text}
-        lexer = Lexer()
-        lexer_result = lexer.check(text)
         # get ppl with char segment
         ppl_score = self.get_ppl_score(list(text))
         items_list = []
-        for item in lexer_result['items']:
+        for w in self.seg(text):
             items = dict()
-            items["word"] = item['item']
-            items["prob"] = self.get_ngram_score(item['item'])
+            items["word"] = w
+            items["prob"] = self.get_ngram_score(w)
             items_list.append(items)
         result_dict['items'] = items_list
         result_dict['ppl'] = ppl_score

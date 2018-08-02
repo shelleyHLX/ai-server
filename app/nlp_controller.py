@@ -23,10 +23,10 @@ class NlpController(object):
                 raise self.errors.append("invalid api key")
             pass
 
-    def output(self, input_data=''):
+    def output(self, input_data='', api_key=None):
         output_data = ''
         try:
-            self.authenticate()
+            self.authenticate(api_key)
             model_api = API(self.model_type)
             output_data = model_api.get_model_output(input_data=input_data)
         except Exception as e:

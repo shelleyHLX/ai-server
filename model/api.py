@@ -2,8 +2,8 @@
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
 
-from model import lexer, lm, word_emb, word_sim_emb, short_text_sim, keyword, topic, sentiment_classify
-
+from model import lexer, lm, word_emb, word_sim_emb, \
+    short_text_sim, keyword, topic, sentiment_classify
 import config
 
 

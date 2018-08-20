@@ -7,10 +7,11 @@ from model.api import API
 
 
 class NlpController(object):
-    def __init__(self, model_type='lexer', max_sentence_len=250, require_auth=True):
+    def __init__(self, model_type='lexer', max_sentence_len=500, require_auth=True):
         self.max_sentence_len = max_sentence_len
         self.require_auth = require_auth
         self.model_type = model_type
+        self.errors = []
 
     def authenticate(self, api_key=None):
         if not self.require_auth:

@@ -5,19 +5,36 @@
 import kenlm
 from util.io_util import get_logger
 from .lexer import Lexer
+import os
 
 default_logger = get_logger(__file__)
 
 
 class LM(Lexer):
+    model = None
+
     def __init__(self, language_model_path=None):
         super(LM, self).__init__()
         self.name = 'lm'
         if language_model_path:
-            self.model = kenlm.Model(language_model_path)
+            try:
+                self.model = kenlm.Model(language_model_path)
+            except IOError:
+                pwd_path = os.path.abspath(os.path.dirname(__file__))
+                language_model_path = os.path.join(pwd_path, '..', language_model_path)
+                self.model = kenlm.Model(language_model_path)
             default_logger.info('Loaded language lexer_model from {}'.format(language_model_path))
         else:
             raise Exception('lm lexer_model need.')
+
+    @classmethod
+    def get_instance(cls, language_model_path=None):
+        if cls.model:
+            return cls.model
+        else:
+            obj = cls(language_model_path)
+            cls.model = obj
+            return obj
 
     def get_ngram_score(self, words):
         """

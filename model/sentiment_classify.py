@@ -1,20 +1,70 @@
 # -*- coding: utf-8 -*-
 # Author: XuMing <xuming624@qq.com>
-# Brief: 
+# Brief: sentiment classification
+# Attention: fix bug with use flask for multi thread keras model infer: https://github.com/keras-team/keras/issues/2397
 
-from model.keras_model.infer import InferCNN
+import os
+
+import tensorflow as tf
+from keras.models import load_model
+
+from model.keras_data_reader import load_dict
+from model.keras_data_reader import pad_sequence
+from model.keras_data_reader import vectorize_words
 from util.io_util import get_logger
 
-default_logger = get_logger(__file__)
+logger = get_logger(__file__)
 
 
-class Sentiment(InferCNN):
+class Sentiment(object):
+    sentiment_model = None
+
     def __init__(self, model_path, word_dict_path, maxlen=300):
-        super(Sentiment, self).__init__(model_path, word_dict_path, maxlen=maxlen)
         self.name = 'sentiment_classify'
+        self.maxlen = maxlen
+        # load dict
+        pwd_path = os.path.abspath(os.path.dirname(__file__))
+        if word_dict_path:
+            try:
+                self.word_ids_dict = load_dict(word_dict_path)
+            except IOError:
+                word_dict_path = os.path.join(pwd_path, '..', word_dict_path)
+                self.word_ids_dict = load_dict(word_dict_path)
+
+        # load model by file
+        if model_path:
+            try:
+                self.sentiment_model = load_model(model_path)
+            except IOError:
+                model_path = os.path.join(pwd_path, '..', model_path)
+                self.sentiment_model = load_model(model_path)
+            logger.info("Load model ok, path: ", model_path)
+            # self.sentiment_model._make_predict_function()  # have to initialize before threading
+            self.graph = tf.get_default_graph()
+        else:
+            logger.warn('model file is need.')
+            raise Exception('model file need.')
+
+    @classmethod
+    def get_instance(cls, model_path, word_dict_path, maxlen=300):
+        if cls.sentiment_model:
+            return cls.sentiment_model
+        else:
+            obj = cls(model_path, word_dict_path, maxlen=maxlen)
+            cls.sentiment_model = obj
+            return obj
 
     def get_sentiment_prob(self, text):
-        probs = self.infer(text)
+        # read data to index
+        test_text_words = [list(text)]
+        word_ids = vectorize_words(test_text_words, self.word_ids_dict)
+        # pad sequence
+        word_seq = pad_sequence(word_ids, self.maxlen)
+        # predict prob
+        with self.graph.as_default():
+            predict_probs = self.sentiment_model.predict(word_seq)
+        # get prob for one line test text
+        probs = predict_probs[0]
         probs_dict = dict((idx, prob) for idx, prob in enumerate(probs))
         return probs_dict
 

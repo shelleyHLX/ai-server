@@ -5,16 +5,33 @@
 import jieba
 import jieba.posseg
 import jieba.analyse
+import os
 
 __all__ = ["Lexer"]
 
 
 class Lexer(object):
+    lexer_model = None
+
     def __init__(self, custom_dict_path=None):
         self.lexer_model = jieba
         if custom_dict_path:
-            self.lexer_model.load_userdict(custom_dict_path)
+            try:
+                self.lexer_model.load_userdict(custom_dict_path)
+            except IOError:
+                pwd_path = os.path.abspath(os.path.dirname(__file__))
+                custom_dict_path = os.path.join(pwd_path, '..', custom_dict_path)
+                self.lexer_model.load_userdict(custom_dict_path)
         self.lexer_model_analyse = jieba.analyse
+
+    @classmethod
+    def get_instance(cls, custom_dict_path=None):
+        if cls.lexer_model:
+            return cls.lexer_model
+        else:
+            obj = cls(custom_dict_path)
+            cls.lexer_model = obj
+            return obj
 
     def posseg(self, text):
         return self.lexer_model.posseg.cut(text)

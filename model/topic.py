@@ -1,12 +1,17 @@
 # -*- coding: utf-8 -*-
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
-
-from util.io_util import get_logger
-from model.keras_model.infer import InferCNN
 import operator
+import os
+import tensorflow as tf
+from keras.models import load_model
 
-default_logger = get_logger(__file__)
+from model.keras_data_reader import load_dict
+from model.keras_data_reader import pad_sequence
+from model.keras_data_reader import vectorize_words
+from util.io_util import get_logger
+
+logger = get_logger(__file__)
 
 label_revserv_dict = {0: '人类作者',
                       1: '机器作者',
@@ -14,16 +19,59 @@ label_revserv_dict = {0: '人类作者',
                       3: '自动摘要'}
 
 
-class Topic(InferCNN):
+class Topic(object):
+    topic_model = None
+
     def __init__(self, model_path, word_dict_path, maxlen=400):
-        super(Topic, self).__init__(model_path, word_dict_path, maxlen)
         self.name = 'topic'
+        self.maxlen = maxlen
+        # load dict
+        pwd_path = os.path.abspath(os.path.dirname(__file__))
+        if word_dict_path:
+            try:
+                self.word_ids_dict = load_dict(word_dict_path)
+            except IOError:
+                word_dict_path = os.path.join(pwd_path, '..', word_dict_path)
+                self.word_ids_dict = load_dict(word_dict_path)
+
+        # load model by file
+        if model_path:
+            try:
+                self.topic_model = load_model(model_path)
+            except IOError:
+                model_path = os.path.join(pwd_path, '..', model_path)
+                self.topic_model = load_model(model_path)
+            logger.info("Load model ok, path: ", model_path)
+            # self.topic_model._make_predict_function()  # have to initialize before threading
+            self.graph = tf.get_default_graph()
+        else:
+            logger.warn('model file is need.')
+            raise Exception('model file need.')
+
+    @classmethod
+    def get_instance(cls, model_path, word_dict_path, maxlen=400):
+        if cls.topic_model:
+            return cls.topic_model
+        else:
+            obj = cls(model_path, word_dict_path, maxlen=maxlen)
+            cls.topic_model = obj
+            return obj
 
     def get_topic(self, text):
-        topic_probs = self.infer(text)
-        topic_probs_dict = dict((idx, prob) for idx, prob in enumerate(topic_probs))
-        topic_probs_order_dict = sorted(topic_probs_dict.items(), key=operator.itemgetter(1), reverse=True)
-        return topic_probs_order_dict
+        # read data to index
+        test_text_words = [list(text)]
+        word_ids = vectorize_words(test_text_words, self.word_ids_dict)
+        # pad sequence
+        word_seq = pad_sequence(word_ids, self.maxlen)
+
+        with self.graph.as_default():
+            # predict prob
+            predict_probs = self.topic_model.predict(word_seq)
+        # get prob for one line test text
+        probs = predict_probs[0]
+        probs_dict = dict((idx, prob) for idx, prob in enumerate(probs))
+        probs_order_dict = sorted(probs_dict.items(), key=operator.itemgetter(1), reverse=True)
+        return probs_order_dict
 
     def check(self, text):
         """

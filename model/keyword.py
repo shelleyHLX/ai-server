@@ -3,15 +3,26 @@
 # Brief: 
 
 from util.io_util import get_logger
-from .lexer import Lexer
+from model.lexer import Lexer
 
 default_logger = get_logger(__file__)
 
 
 class Keyword(Lexer):
+    model = None
+
     def __init__(self):
         super(Keyword, self).__init__()
         self.name = 'keyword'
+
+    @classmethod
+    def get_instance(cls):
+        if cls.model:
+            return cls.model
+        else:
+            obj = cls()
+            cls.model = obj
+            return obj
 
     def get_keywords(self, text, use_textrank=True):
         if use_textrank:

@@ -11,16 +11,26 @@ from .lexer import Lexer
 default_logger = get_logger(__file__)
 
 
-
 def seg(text):
     lexer_model = Lexer()
     return lexer_model.seg(text)
 
 
 class ShortTextSim(WordEmb):
+    model = None
+
     def __init__(self, emb_path=None):
         super(ShortTextSim, self).__init__(emb_path)
         self.name = 'short_text_sim'
+
+    @classmethod
+    def get_instance(cls, emb_path=None):
+        if cls.model:
+            return cls.model
+        else:
+            obj = cls(emb_path)
+            cls.model = obj
+            return obj
 
     def get_text_emb(self, text):
         words = seg(text)

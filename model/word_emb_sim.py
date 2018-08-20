@@ -11,9 +11,20 @@ default_logger = get_logger(__file__)
 
 
 class WordEmbSim(WordEmb):
+    model = None
+
     def __init__(self, emb_path=None):
         super(WordEmbSim, self).__init__(emb_path)
         self.name = 'word_emb_sim'
+
+    @classmethod
+    def get_instance(cls, emb_path=None):
+        if cls.model:
+            return cls.model
+        else:
+            obj = cls(emb_path)
+            cls.model = obj
+            return obj
 
     def check(self, text):
         """

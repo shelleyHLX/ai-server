@@ -10,10 +10,10 @@ from .word_emb import WordEmb
 default_logger = get_logger(__file__)
 
 
-class WordSimEmb(WordEmb):
+class WordEmbSim(WordEmb):
     def __init__(self, emb_path=None):
-        super(WordSimEmb, self).__init__(emb_path)
-        self.name = 'word_sim_embedding'
+        super(WordEmbSim, self).__init__(emb_path)
+        self.name = 'word_emb_sim'
 
     def check(self, text):
         """

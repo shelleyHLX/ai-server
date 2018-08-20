@@ -2,7 +2,7 @@
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
 
-from model import lexer, lm, word_emb, word_sim_emb, \
+from model import lexer, lm, word_emb, word_emb_sim, \
     short_text_sim, keyword, topic, sentiment_classify
 import config
 
@@ -17,8 +17,8 @@ class API(object):
             self.model = lm.LM(language_model_path=config.language_model_path)
         elif model_type == 'wordemb':
             self.model = word_emb.WordEmb(emb_path=config.emb_path)
-        elif model_type == 'wordsimemb':
-            self.model = word_sim_emb.WordSimEmb(emb_path=config.emb_path)
+        elif model_type == 'wordembsim':
+            self.model = word_emb_sim.WordEmbSim(emb_path=config.emb_path)
         elif model_type == 'shorttextsim':
             self.model = short_text_sim.ShortTextSim(emb_path=config.emb_path)
         elif model_type == 'keyword':
@@ -43,7 +43,7 @@ class API(object):
         elif self.model_type == 'wordemb':
             if check_ret:
                 out = 'vec: ' + str(check_ret['vec'])
-        elif self.model_type == 'wordsimemb':
+        elif self.model_type == 'wordembsim':
             if check_ret:
                 out = 'score: ' + str(check_ret['score'])
         elif self.model_type == 'shorttextsim':

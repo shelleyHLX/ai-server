@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 # Author: XuMing <xuming624@qq.com>
 # Brief:
-import sys
-from flask import Flask, request, redirect, url_for, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
+
 from app.nlp_controller import NlpController
 from util.io_util import get_logger
 
@@ -53,11 +53,11 @@ def wordemb_api():
     return jsonify(output_data)
 
 
-@app.route('/wordsimemb_api', methods=['POST'])
-def wordsimemb_api():
+@app.route('/wordembsim_api', methods=['POST'])
+def wordembsim_api():
     input_data = request.json
     default_logger.info("api_input: " + input_data)
-    controller = NlpController(model_type='wordsimemb', require_auth=False)
+    controller = NlpController(model_type='wordembsim', require_auth=False)
     output_data = controller.output(input_data)
     default_logger.info("api_output: " + output_data['output'])
     return jsonify(output_data)

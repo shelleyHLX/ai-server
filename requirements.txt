@@ -1,8 +1,8 @@
 numpy
-kenlm
 jieba
 tensorflow
 keras>=2.1.5
 gensim
+kenlm
 flask
 flask_cors

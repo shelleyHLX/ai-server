@@ -5,6 +5,7 @@ from keras.preprocessing import sequence
 import numpy as np
 from codecs import open
 
+
 def vectorize_words(words, word_idx):
     inputs = []
     for word in words:

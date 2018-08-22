@@ -9,12 +9,24 @@ default_logger = get_logger(__file__)
 
 
 class Corrector(object):
+    model = None
+
     def __init__(self):
         self.name = 'corrector'
         self.model = pycorrector
 
+    @classmethod
+    def get_instance(cls):
+        if cls.model:
+            return cls.model
+        else:
+            obj = cls()
+            cls.model = obj
+            return obj
+
     def get_corrected_text(self, text):
-        return self.model.correct(text)
+        corrected_text, detail = self.model.correct(text)
+        return corrected_text, detail
 
     def check(self, text):
         """
@@ -24,7 +36,7 @@ class Corrector(object):
         {
             "text": "少先队员因该为老人让坐",
             "log_id": 3956079,
-            "item": {
+            "items": {
                 "vec_fragment": [
                     {
                         "ori_frag": "因该",
@@ -41,17 +53,12 @@ class Corrector(object):
                         "score": 0.91
                     }
                 ],
-                "correct_query": "少先队员应该为老人让座"
             },
+            "corrected_text": "少先队员应该为老人让座"
         }
         """
         result_dict = {"text": text}
-        corrected_text = self.get_corrected_text(text)
-        items_list = []
-        for w, s in corrected_text:
-            items = dict()
-            items["score"] = s
-            items["tag"] = w
-            items_list.append(items)
-        result_dict['items'] = items_list
+        corrected_text, detail = self.get_corrected_text(text)
+        result_dict['items'] = detail
+        result_dict['corrected_text'] = corrected_text
         return result_dict

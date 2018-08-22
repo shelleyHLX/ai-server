@@ -103,6 +103,16 @@ def sentimentclassify_api():
     return jsonify(output_data)
 
 
+@app.route('/corrector_api', methods=['POST'])
+def corrector_api():
+    input_data = request.json
+    default_logger.info("api_input: " + input_data)
+    controller = NlpController(model_type='corrector', require_auth=False)
+    output_data = controller.output(input_data)
+    default_logger.info("api_output: " + output_data['output'])
+    return jsonify(output_data)
+
+
 # HTTP Errors handlers
 @app.errorhandler(404)
 def url_error(e):

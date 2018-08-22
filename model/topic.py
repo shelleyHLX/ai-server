@@ -80,7 +80,7 @@ class Topic(object):
         Returns:
         {
             "log_id": 3591049593939822907,
-            "item": {
+            "items": {
                 "lv2_tag_list": [
                     {
                         "score": 0.877436,

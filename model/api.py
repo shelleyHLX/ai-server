@@ -4,7 +4,7 @@
 
 import config
 from model import lexer, lm, word_emb, word_emb_sim, \
-    short_text_sim, keyword, topic, sentiment_classify
+    short_text_sim, keyword, topic, sentiment_classify, corrector
 
 
 class API(object):
@@ -19,6 +19,7 @@ class API(object):
         self.topic_model = topic.Topic.get_instance(config.topic_model_path, config.topic_word_dict_path)
         self.sentiment_model = sentiment_classify.Sentiment.get_instance(config.sentiment_model_path,
                                                                          config.sentiment_word_dict_path)
+        self.corrector_model = corrector.Corrector()
 
     def generate_output_data(self, input_data=''):
         out = ''
@@ -71,6 +72,11 @@ class API(object):
                 for item in items:
                     out = 'sentiment:' + str(item['sentiment']) + ' positive_prob:' + \
                           str(item['positive_prob']) + ' negative_prob:' + str(item['negative_prob'])
+        elif self.model_type == 'corrector':
+            check_ret = self.corrector_model.check(input_data)
+            print(check_ret)
+            if check_ret:
+                out = 'corrected_text:' + str(check_ret['corrected_text'])
         return out
 
     def get_model_output(self, input_data=''):

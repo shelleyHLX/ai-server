@@ -6,3 +6,4 @@ gensim
 kenlm
 flask
 flask_cors
+pycorrector

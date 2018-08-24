@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Author: XuMing <xuming624@qq.com>
 # Brief:
-from model import topic
 import os
+
 import config
+from model.nlp import topic
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 topic_model_path = os.path.join(pwd_path, '..', config.topic_model_path)

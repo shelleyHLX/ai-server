@@ -8,9 +8,9 @@ import os
 import tensorflow as tf
 from keras.models import load_model
 
-from model.keras_data_reader import load_dict
-from model.keras_data_reader import pad_sequence
-from model.keras_data_reader import vectorize_words
+from model.nlp.keras_data_reader import load_dict
+from model.nlp.keras_data_reader import pad_sequence
+from model.nlp.keras_data_reader import vectorize_words
 from util.io_util import get_logger
 
 logger = get_logger(__file__)
@@ -28,7 +28,7 @@ class Sentiment(object):
             try:
                 self.word_ids_dict = load_dict(word_dict_path)
             except IOError:
-                word_dict_path = os.path.join(pwd_path, '..', word_dict_path)
+                word_dict_path = os.path.join(pwd_path, '../../', word_dict_path)
                 self.word_ids_dict = load_dict(word_dict_path)
 
         # load model by file
@@ -36,7 +36,7 @@ class Sentiment(object):
             try:
                 self.sentiment_model = load_model(model_path)
             except IOError:
-                model_path = os.path.join(pwd_path, '..', model_path)
+                model_path = os.path.join(pwd_path, '../../', model_path)
                 self.sentiment_model = load_model(model_path)
             logger.info("Load model ok, path: ", model_path)
             # self.sentiment_model._make_predict_function()  # have to initialize before threading

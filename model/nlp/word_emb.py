@@ -21,7 +21,7 @@ def get_word2vectors(filename):
         model = KeyedVectors.load_word2vec_format(filename, binary=True)
     except IOError:
         pwd_path = os.path.abspath(os.path.dirname(__file__))
-        filename = os.path.join(pwd_path, '..', filename)
+        filename = os.path.join(pwd_path, '../../', filename)
         model = KeyedVectors.load_word2vec_format(filename, binary=True)
     return model
 

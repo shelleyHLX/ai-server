@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
-from model import short_text_sim
 import os
+
 import config
+from model.nlp import short_text_sim
 
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 emb_path = os.path.join(pwd_path, '..', config.emb_path)

@@ -3,7 +3,7 @@
 # Brief:
 
 from config import secret_key
-from model.api import API
+from model.api_nlp import API
 
 
 class NlpController(object):

@@ -7,3 +7,4 @@ kenlm
 flask
 flask_cors
 pycorrector
+imageai

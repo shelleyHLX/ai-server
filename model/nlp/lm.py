@@ -21,7 +21,7 @@ class LM(Lexer):
                 self.model = kenlm.Model(language_model_path)
             except IOError:
                 pwd_path = os.path.abspath(os.path.dirname(__file__))
-                language_model_path = os.path.join(pwd_path, '..', language_model_path)
+                language_model_path = os.path.join(pwd_path, '../../', language_model_path)
                 self.model = kenlm.Model(language_model_path)
             default_logger.info('Loaded language lexer_model from {}'.format(language_model_path))
         else:

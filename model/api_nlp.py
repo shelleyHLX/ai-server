@@ -3,8 +3,8 @@
 # Brief:
 
 import config
-from model import lexer, lm, word_emb, word_emb_sim, \
-    short_text_sim, keyword, topic, sentiment_classify, corrector
+from model.nlp import corrector, sentiment_classify, short_text_sim, \
+    keyword, lm, word_emb_sim, topic, word_emb, lexer
 
 
 class API(object):

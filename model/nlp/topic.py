@@ -3,12 +3,13 @@
 # Brief: 
 import operator
 import os
+
 import tensorflow as tf
 from keras.models import load_model
 
-from model.keras_data_reader import load_dict
-from model.keras_data_reader import pad_sequence
-from model.keras_data_reader import vectorize_words
+from model.nlp.keras_data_reader import load_dict
+from model.nlp.keras_data_reader import pad_sequence
+from model.nlp.keras_data_reader import vectorize_words
 from util.io_util import get_logger
 
 logger = get_logger(__file__)
@@ -39,7 +40,7 @@ class Topic(object):
             try:
                 self.topic_model = load_model(model_path)
             except IOError:
-                model_path = os.path.join(pwd_path, '..', model_path)
+                model_path = os.path.join(pwd_path, '../../', model_path)
                 self.topic_model = load_model(model_path)
             logger.info("Load model ok, path: ", model_path)
             # self.topic_model._make_predict_function()  # have to initialize before threading

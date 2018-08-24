@@ -2,8 +2,8 @@
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
 
+from model.nlp.lexer import Lexer
 from util.io_util import get_logger
-from model.lexer import Lexer
 
 default_logger = get_logger(__file__)
 

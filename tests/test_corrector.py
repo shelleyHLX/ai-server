@@ -2,7 +2,7 @@
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
 
-from model import corrector
+from model.nlp import corrector
 
 input_datas = ['少先队员因该为老人让坐',
                '人工只能有希望吗']

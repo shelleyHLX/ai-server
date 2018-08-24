@@ -23,3 +23,6 @@ topic_word_dict_path = './data/mcnn_vocab.txt'
 sentiment_model_path = './data/sentiment_hotel_model.h5'
 sentiment_word_dict_path = './data/sentiment_hotel_vocab.txt'
 
+# image
+image_prediction = './data/resnet50_prediction.h5'
+image_detection = './data/resnet50_detection.h5'

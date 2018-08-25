@@ -4,6 +4,7 @@
 @description: 数字化妆
 """
 import os
+
 import face_recognition
 from PIL import Image
 from PIL import ImageDraw
@@ -70,25 +71,15 @@ class FaceMakeup(object):
         """
         Args:
             input_image_path: path(string)
-            lang: language
+            output_image_path: path(string)
         Returns:
          {
             "log_id": "3586909108147953423",
-            "items_num": 2,
-            "items": [
-                {
-                    "score": 99.6089,
-                    "name": "负债和所有者权益"
-                },
-                {
-                    "score": 99.6365,
-                    "name": "权益"
-                }
-            ]
+            "input": path,
+            "output": path
         }
         """
         result_dict = {'input': input_image_path}
-        items = []
         makeup_image = self.draw_image(input_image_path)
         if output_image_path:
             makeup_image.save(output_image_path)

@@ -23,6 +23,17 @@ topic_word_dict_path = './data/mcnn_vocab.txt'
 sentiment_model_path = './data/sentiment_hotel_model.h5'
 sentiment_word_dict_path = './data/sentiment_hotel_vocab.txt'
 
-# image
+# image prediction
 image_prediction = './data/resnet50_prediction.h5'
+
+# image detection
 image_detection = './data/resnet50_detection.h5'
+
+# image colorize
+train_input_image_path = './data/images/colorize_train.png'
+colorize_model_path = './data/cartoon_colorize.h5'
+
+# image compose
+compose_model_path = './data/haarcascade_frontalface_default.xml'
+compose_image_path = './data/images/hat_compose.png'
+

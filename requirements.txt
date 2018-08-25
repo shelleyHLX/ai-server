@@ -10,3 +10,5 @@ imageai
 pytesseract
 Pillow
 face_recognition
+opencv-python
+scikit-image

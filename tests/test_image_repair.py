@@ -4,19 +4,16 @@
 @description: 
 """
 
-from model.image import text_ocr
+from model.image import repair
 
 input_datas = [
+    '../data/images/inpaint.png',
     '../data/images/text.png',
-    '../data/images/laptop.png',
 ]
-model = text_ocr.Ocr()
+model = repair.Repair()
 
 for input_data in input_datas:
-    out = ''
     check_ret = model.check(input_data)
     print(check_ret)
-    items = check_ret['items']
-    for item in items:
-        out += item['name'] + '/' + str(item['score']) + ' '
+    out = check_ret['output']
     print(out)

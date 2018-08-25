@@ -12,8 +12,8 @@ from model.image import prediction
 pwd_path = os.path.abspath(os.path.dirname(__file__))
 model_path = os.path.join(pwd_path, '..', config.image_prediction)
 
-input_datas = ['../data/red_car.png',
-               '../data/flower.png',
+input_datas = ['../data/images/red_car.png',
+               '../data/images/desk.png',
                ]
 model = prediction.Prediction(model_path)
 

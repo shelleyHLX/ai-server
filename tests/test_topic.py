@@ -11,7 +11,7 @@ topic_model_path = os.path.join(pwd_path, '..', config.topic_model_path)
 topic_word_dict_path = os.path.join(pwd_path, '..', config.topic_word_dict_path)
 
 input_datas = ['此外，公司拟对全资子公司吉林欧亚置业有限公司增资4.3亿元，增资后，吉林欧亚置业注册资本由7000万元增加到5亿元。吉林欧亚置业主要经营范围为房地产开发及百货零售等业务。',
-               '此外，公司拟对全资子公司吉林欧亚置业有限公司增资4.3亿元。  增资后，吉林欧亚置业注册资本由7000万元增加到5亿元。吉林欧亚置业主要经营范围为房地产开发及百货零售等业务。',
+               '此外，公司拟对全资子公司吉林欧亚置业有限公司增资4.3亿元。吉林欧亚置业主要经营范围为房地产开发及百货零售等业务。',
                '你好吗 我你们才是不好吗']
 model = topic.Topic(topic_model_path, topic_word_dict_path)
 

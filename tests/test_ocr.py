@@ -4,19 +4,13 @@
 @description: 
 """
 
-import os
-
-import config
-from model.image import detection
-
-pwd_path = os.path.abspath(os.path.dirname(__file__))
-model_path = os.path.join(pwd_path, '..', config.image_detection)
+from model.image import text_ocr
 
 input_datas = [
-    '../data/images/red_car.png',
+    '../data/images/text_img.png',
     '../data/images/laptop.png',
 ]
-model = detection.Detection(model_path)
+model = text_ocr.Ocr()
 
 for input_data in input_datas:
     out = ''

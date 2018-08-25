@@ -6,7 +6,7 @@ from gensim.models.keyedvectors import KeyedVectors
 import os
 from util.io_util import get_logger
 
-default_logger = get_logger(__file__)
+logger = get_logger(__file__)
 
 
 def get_word2vectors(filename):
@@ -46,7 +46,7 @@ class WordEmb(object):
     def __init__(self, emb_path=None):
         if emb_path:
             self.emb_model = get_word2vectors(filename=emb_path)
-            default_logger.info('Loaded word emb from {}'.format(emb_path))
+            logger.info('Loaded word emb from {}'.format(emb_path))
         else:
             raise Exception('need emb file.')
 

@@ -2,10 +2,7 @@
 # Author: XuMing <xuming624@qq.com>
 # Brief: 
 
-from util.io_util import get_logger
 import pycorrector
-
-default_logger = get_logger(__file__)
 
 
 class Corrector(object):

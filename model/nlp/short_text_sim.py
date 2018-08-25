@@ -3,12 +3,9 @@
 # Brief: 
 import numpy as np
 
-from util.io_util import get_logger
 from util.math_util import cos_dist
-from .word_emb import WordEmb
 from .lexer import Lexer
-
-default_logger = get_logger(__file__)
+from .word_emb import WordEmb
 
 
 def seg(text):

@@ -5,7 +5,7 @@
 from model.nlp.lexer import Lexer
 from util.io_util import get_logger
 
-default_logger = get_logger(__file__)
+logger = get_logger(__file__)
 
 
 class Keyword(Lexer):
@@ -27,8 +27,10 @@ class Keyword(Lexer):
     def get_keywords(self, text, use_textrank=True):
         if use_textrank:
             keywords = self.lexer_model_analyse.textrank(text, withWeight=True, topK=5)
+            logger.info('use text rank')
         else:
             keywords = self.lexer_model_analyse.extract_tags(text, withWeight=True, topK=5)
+            logger.info('use extract tags')
         return keywords
 
     def check(self, text):

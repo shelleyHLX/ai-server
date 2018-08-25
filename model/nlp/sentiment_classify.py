@@ -38,12 +38,12 @@ class Sentiment(object):
             except IOError:
                 model_path = os.path.join(pwd_path, '../../', model_path)
                 self.sentiment_model = load_model(model_path)
-            logger.info("Load model ok, path: ", model_path)
+            logger.info("Load model ok, path: " + model_path)
             # self.sentiment_model._make_predict_function()  # have to initialize before threading
             self.graph = tf.get_default_graph()
         else:
-            logger.warn('model file is need.')
-            raise Exception('model file need.')
+            logger.warn('model file need')
+            raise Exception('model file need')
 
     @classmethod
     def get_instance(cls, model_path, word_dict_path, maxlen=300):

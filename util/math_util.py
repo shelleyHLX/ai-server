@@ -34,3 +34,17 @@ def cos_dist2(a, b):
         b_sqrt += bb ** 2
     down = np.sqrt(a_sqrt * b_sqrt)
     return up / down if down > 0 else 0.0
+
+
+def hamming_distance(hash1, hash2):
+    """
+    计算汉明距离
+    :param hash1:
+    :param hash2:
+    :return:
+    """
+    num = 0
+    for index in range(len(hash1)):
+        if hash1[index] != hash2[index]:
+            num += 1
+    return num

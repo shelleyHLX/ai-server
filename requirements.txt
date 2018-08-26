@@ -12,3 +12,8 @@ Pillow
 face_recognition
 opencv-python
 scikit-image
+wave
+python_speech_features
+pypinyin
+pydub
+pyaudio

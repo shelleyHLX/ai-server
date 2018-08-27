@@ -17,3 +17,4 @@ python_speech_features
 pypinyin
 pydub
 pyaudio
+parrots

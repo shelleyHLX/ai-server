@@ -3,12 +3,12 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
-from model.speech import recognition
+from model.speech import speech_recognition
 
 input_datas = [
     '../data/speechs/16k.wav',
 ]
-model = recognition.Recognition()
+model = speech_recognition.SpeechRecognition()
 
 for input_data in input_datas:
     check_ret = model.check(input_data)

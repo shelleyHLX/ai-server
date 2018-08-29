@@ -4,6 +4,7 @@
 @description: 
 """
 
+import base64
 import os
 
 from imageai.Detection import ObjectDetection
@@ -23,10 +24,10 @@ class Detection(object):
         # load model by file
         if model_path:
             try:
-                self.model.setModelPath(model_path)
-            except IOError:
                 pwd_path = os.path.abspath(os.path.dirname(__file__))
                 model_path = os.path.join(pwd_path, '../..', model_path)
+                self.model.setModelPath(model_path)
+            except ValueError:
                 self.model.setModelPath(model_path)
             logger.info("Load model ok, path: " + model_path)
         else:
@@ -98,7 +99,9 @@ class Detection(object):
             file_name, suffix = os.path.splitext(file_path)
             output_image_path = os.path.join(dir_path, 'detected_' + file_name + suffix)
             detections = self.detect_image(input_image_path, output_image_path=output_image_path)
-        result_dict['output'] = output_image_path
+        result_dict['output_path'] = output_image_path
+        encoded = base64.b64encode(open(output_image_path, 'rb').read())
+        result_dict['output_base64'] = encoded.decode('utf-8')
         for each_detection in detections:
             # print(each_detection['name'], " : ", str(each_detection['percentage_probability']))
             item = dict()

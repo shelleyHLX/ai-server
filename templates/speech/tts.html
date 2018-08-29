@@ -14,18 +14,20 @@
         <div class="card text-center bg-light">
             <div class="card-body" style="padding-bottom: 0.2cm">
                 <input class="card-title form-control" type="text" id="input" name="input"
-                       placeholder="Input sentences (like: 电脑中毒了吗 电脑坏了吗)"/>
-                <button class="card-text btn btn-outline-primary" id="btn">短文本相似度</button>
+                       placeholder="Input text (like: 北京图书馆）"/>
+                <button class="card-text btn btn-outline-primary" id="btn">语音合成</button>
                 <div class="spinner" id="spinner" style="display: none">
                     <div class="double-bounce1"></div>
                     <div class="double-bounce2"></div>
                 </div>
             </div>
             <div class="card-footer bg-white">
-                    <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
-                        <div class="item" id="api_input">电脑中毒了吗 电脑坏了吗</div>
-                        <div class="item" id="api_output">score: 0.6466163599721264</div>
-                    </pre>
+                <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
+                    <div class="item" id="api_input"></div>
+                    <div><audio class="item" controls="controls" autobuffer="autobuffer" autoplay="autoplay"
+                                id="api_output" src="data:audio/wav;base64,"></audio>
+                    </div>
+                </pre>
             </div>
         </div>
     </div>
@@ -40,7 +42,7 @@
         $('#spinner').toggle();
 
         $.ajax({
-            url: "http://127.0.0.1:5001/short_text_sim_api",
+            url: "http://127.0.0.1:5001/tts_api",
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify(input),
@@ -52,7 +54,7 @@
 
                 // fill the html for answer
                 $('#api_input').html(data.input);
-                $('#api_output').html(data.output);
+                $('#api_output').attr('src', 'data:audio/x-wav;base64,' + data.output);
 
                 $("#input").val("");
             },

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 @author:XuMing（xuming624@qq.com)
-@description: 图像相似度计算
+@description: 图像对比，图像相似度计算
 """
 import cv2
 import numpy as np
@@ -12,11 +12,11 @@ from util.math_util import hamming_distance
 logger = get_logger(__file__)
 
 
-class Similar(object):
+class Compare(object):
     model = None
 
     def __init__(self):
-        self.name = 'image_similar'
+        self.name = 'image_compare'
         self.model = cv2
 
     @classmethod

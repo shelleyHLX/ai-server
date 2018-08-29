@@ -40,7 +40,7 @@ class QualityAduit(object):
         """
         Args:
             input_image_path: path(string)
-            output_image_path: path(string)
+            clear_threshold
         Returns:
          {
             "log_id": "12345",

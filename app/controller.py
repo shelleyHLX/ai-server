@@ -3,10 +3,10 @@
 # Brief:
 
 from config import secret_key
-from model.api_nlp import API
+from model.api import API
 
 
-class NlpController(object):
+class Controller(object):
     def __init__(self, model_type='lexer', max_sentence_len=500, require_auth=True):
         self.max_sentence_len = max_sentence_len
         self.require_auth = require_auth

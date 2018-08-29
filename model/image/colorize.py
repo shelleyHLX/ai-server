@@ -3,7 +3,7 @@
 @author:XuMing（xuming624@qq.com)
 @description: 图片着色
 """
-
+import base64
 import os
 
 import numpy as np
@@ -74,7 +74,14 @@ class Colorize(object):
     def __init__(self, model_path):
         self.name = 'image_colorize'
         self.model = build_model()
-        self.model.load_weights(model_path)
+        if model_path:
+            try:
+                pwd_path = os.path.abspath(os.path.dirname(__file__))
+                model_path = os.path.join(pwd_path, '../..', model_path)
+                self.model.load_weights(model_path)
+            except ValueError:
+                self.model.load_weights(model_path)
+            logger.info("Load %s model ok, path: %s" % (self.name, model_path))
 
     @classmethod
     def get_instance(cls, model_path):
@@ -117,5 +124,7 @@ class Colorize(object):
             file_name, suffix = os.path.splitext(file_path)
             output_image_path = os.path.join(dir_path, 'colorized_' + file_name + suffix)
             imsave(output_image_path, predict_image)
-        result_dict['output'] = output_image_path
+        result_dict['output_path'] = output_image_path
+        encoded = base64.b64encode(open(output_image_path, 'rb').read())
+        result_dict['output_base64'] = encoded.decode('utf-8')
         return result_dict

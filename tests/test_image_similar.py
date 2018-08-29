@@ -4,13 +4,13 @@
 @description: 
 """
 
-from model.image import similar
+from model.image import compare
 
 input_datas = [
     ('../data/images/clear_dog.png', '../data/images/blurry_dog.png',),
     ('../data/images/grassland1.jpeg', '../data/images/grassland2.jpeg'),
 ]
-model = similar.Similar()
+model = compare.Compare()
 
 for input_data in input_datas:
     check_ret = model.check(input_data[0], input_data[1])

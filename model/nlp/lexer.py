@@ -20,7 +20,7 @@ class Lexer(object):
                 self.lexer_model.load_userdict(custom_dict_path)
             except IOError:
                 pwd_path = os.path.abspath(os.path.dirname(__file__))
-                custom_dict_path = os.path.join(pwd_path, '..', custom_dict_path)
+                custom_dict_path = os.path.join(pwd_path, '../..', custom_dict_path)
                 self.lexer_model.load_userdict(custom_dict_path)
         self.lexer_model_analyse = jieba.analyse
 

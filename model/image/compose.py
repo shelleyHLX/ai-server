@@ -3,6 +3,7 @@
 @author:XuMing（xuming624@qq.com)
 @description: 头像特效合成
 """
+import base64
 import os
 
 import cv2
@@ -39,11 +40,11 @@ class Compose(object):
             raise Exception('model file need')
 
     @classmethod
-    def get_instance(cls, model_path):
+    def get_instance(cls, model_path, compose_image_path):
         if cls.model:
             return cls.model
         else:
-            obj = cls(model_path)
+            obj = cls(model_path, compose_image_path)
             cls.model = obj
             return obj
 
@@ -109,5 +110,7 @@ class Compose(object):
             file_name, suffix = os.path.splitext(file_path)
             output_image_path = os.path.join(dir_path, 'compose_' + file_name + suffix)
             self.save_image(output_image_path, predict_image)
-        result_dict['output'] = output_image_path
+        result_dict['output_path'] = output_image_path
+        encoded = base64.b64encode(open(output_image_path, 'rb').read())
+        result_dict['output_base64'] = encoded.decode('utf-8')
         return result_dict

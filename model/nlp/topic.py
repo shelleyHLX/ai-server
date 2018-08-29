@@ -32,7 +32,7 @@ class Topic(object):
             try:
                 self.word_ids_dict = load_dict(word_dict_path)
             except IOError:
-                word_dict_path = os.path.join(pwd_path, '..', word_dict_path)
+                word_dict_path = os.path.join(pwd_path, '../..', word_dict_path)
                 self.word_ids_dict = load_dict(word_dict_path)
 
         # load model by file

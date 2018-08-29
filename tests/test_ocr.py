@@ -4,13 +4,13 @@
 @description: 
 """
 
-from model.image import text_ocr
+from model.image import ocr
 
 input_datas = [
     '../data/images/text.png',
     '../data/images/laptop.png',
 ]
-model = text_ocr.Ocr()
+model = ocr.Ocr()
 
 for input_data in input_datas:
     out = ''

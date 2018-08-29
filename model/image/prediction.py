@@ -23,10 +23,10 @@ class Prediction(object):
         # load model by file
         if model_path:
             try:
-                self.model.setModelPath(model_path)
-            except IOError:
                 pwd_path = os.path.abspath(os.path.dirname(__file__))
-                model_path = os.path.join(pwd_path, '../../', model_path)
+                model_path = os.path.join(pwd_path, '../..', model_path)
+                self.model.setModelPath(model_path)
+            except ValueError:
                 self.model.setModelPath(model_path)
             logger.info("Load model ok, path: " + model_path)
         else:

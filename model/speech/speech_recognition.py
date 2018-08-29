@@ -11,7 +11,7 @@ from util.io_util import get_logger
 logger = get_logger(__file__)
 
 
-class Recognition(object):
+class SpeechRecognition(object):
     model = None
 
     def __init__(self):

@@ -3,6 +3,7 @@
 @author:XuMing（xuming624@qq.com)
 @description: 数字化妆
 """
+import base64
 import os
 
 import face_recognition
@@ -89,4 +90,6 @@ class FaceMakeup(object):
             output_image_path = os.path.join(dir_path, 'makeup_' + file_name + suffix)
             makeup_image.save(output_image_path)
         result_dict['output'] = output_image_path
+        encoded = base64.b64encode(open(output_image_path, 'rb').read())
+        result_dict['output_base64'] = encoded.decode('utf-8')
         return result_dict

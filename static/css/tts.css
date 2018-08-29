@@ -1,0 +1,279 @@
+Body {
+    position: static;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+    font-family: Helvetica, Arial, Verdana, sans-serif;
+}
+
+p {
+    clear: both;
+}
+
+img {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+}
+
+td {
+    padding: 4px;
+}
+
+li {
+    padding: 2px;
+}
+
+div#titlebar {
+    position: relative;
+    margin: 4px 4px 4px 4px;
+    padding: 10px 8px 10px 8px;
+    width: 800px;
+    height: 122px;
+    color: #ff0000;
+    background-color: #eeeeee;
+
+}
+
+div#cstr_logo {
+    height: 80px;
+    float: left;
+}
+
+div#cstr_title {
+    padding-left: 10px;
+    padding-top: 10px;
+    font-size: 18pt;
+    float: left;
+}
+
+div#uoe_logo {
+    height: 80px;
+    float: right;
+}
+
+div#menu_bar {
+    padding-top: 6px;
+    padding-bottom: 10px;
+    clear: both;
+    font-size: 11pt;
+}
+
+div#menu_bar A {
+    text-decoration: none;
+}
+
+div#menu_bar A:hover {
+    background-color: #ffffff;
+    color: #ff0000;
+}
+
+div#menu_item {
+    text-align: center;
+    float: left;
+    border: 0px;
+    padding: 0px;
+    margin: 4px 2px 2px 2px;
+    width: 94px;
+    height: 18px;
+    background-color: #bbbbbb;
+    color: #0000dd;
+    /* border: 1pt dotted red; */
+}
+
+div#menu_item_end {
+    text-align: right;
+    float: right;
+    margin: 0px 2px 0px 2px;
+    height: 18px;
+    color: #6666dd;
+}
+
+div#download_icon {
+    text-align: right;
+    float: left;
+    margin: 0px 4px 0px 2px;
+    width: 95px;
+    height: 18px;
+    background-color: #ffffff;
+    color: #6666dd;
+}
+
+div#largecontent {
+    width: 800px;
+    margin: 10px;
+    padding: 20px 20px 20px 20px;
+    font: 12pt sans-serif;
+    clear: both;
+}
+
+div#content {
+    width: 800px;
+    margin: 10px;
+    padding: 20px 20px 20px 20px;
+    font: 11pt sans-serif;
+    clear: both;
+}
+
+div#content h1 {
+    text-align: center;
+    color: #ff0000;
+}
+
+div#people table {
+    margin-left: 50px;
+}
+
+div#people td {
+    padding: 2px 4px 2px 4px;
+}
+
+div#people th {
+    width: 160px;
+    padding: 4px 4px 4px 4px;
+    text-align: left;
+    color: #ff0000;
+}
+
+div#personal h2 {
+    text-align: center;
+    margin-left: 20px;
+}
+
+div#personal table {
+    margin-left: 20px;
+}
+
+div#personal th {
+    width: 150px;
+    padding: 4px 10px 4px 2px;
+    text-align: left;
+    color: #ff0000;
+}
+
+div#personal td.image {
+    width: 120px;
+    padding: 0px 60px 0px 20px;
+}
+
+div#talks table {
+    margin-left: 40px;
+}
+
+div#talks th {
+    width: 150px;
+    padding: 4px 10px 4px 2px;
+    text-align: left;
+    color: #ff0000;
+}
+
+div#talks td {
+    width: 150px;
+    padding: 10px 10px 10px 2px;
+    text-align: left;
+}
+
+div#talks pre {
+    margin-left: 40px;
+}
+
+div#news h2 {
+    float: left;
+    clear: left;
+    font-size: 15px;
+    padding: 20px 20px 20px 30px;
+    margin: 0px 0px 10px 0px;
+    color: #ff0000;
+    /* border: 1pt dotted red; */
+}
+
+div.news_item {
+    margin: 20px 15px 20px 15px;
+    padding: 2ex 5em 0ex 10em;
+    /* border: 1pt dotted blue; */
+    font-size: 16px;
+}
+
+div#project p, div#contact p {
+    font-size: 12pt;
+    margin-left: 30px;
+}
+
+div#project li {
+    font-size: 12pt;
+}
+
+div#footer {
+    width: 800px;
+    margin: 5px;
+    padding-top: 20px;
+    font-family: sans-serif;
+    font-size: 8pt;
+    font-style: italic;
+    color: #ff0000;
+    clear: both;
+}
+
+div#footer A {
+    text-decoration: none;
+}
+
+div#machines th {
+    text-align: left;
+    color: #ff0000;
+}
+
+div#machines td {
+    padding: 0px 4ex 0px 0px;
+}
+
+div#phd_links li {
+    font-size: 12pt;
+    padding: 1ex 0px 1ex 0px;
+}
+
+div#google form {
+    float: right;
+    font-size: 8pt;
+}
+
+div#google input {
+    float: right;
+    height: 20px;
+    border: 5px 0px 5px 0px;
+}
+
+div#google img {
+    float: right;
+    height: 30px;
+}
+
+div#holder {
+    clear: both;
+}
+
+div#fpimage {
+    position: static;
+    float: left;
+    border: 2px;
+    margin: 5px;
+    padding: 5px;
+    width: 68%;
+    height: 250px;
+}
+
+div#fbox {
+    float: right;
+    clear: right;
+    border: 1px solid red;
+    margin: 30px 5px 10px 5px;
+    padding: 5px 5px 10px 5px;
+    width: 24%;
+    background-color: #eeeeee;
+}
+
+div#fbox h2 {
+    margin: 0px;
+    color: red;
+    font-size: 10pt;
+}

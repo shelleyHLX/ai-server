@@ -3,7 +3,7 @@
 # Brief: 
 
 import kenlm
-from util.io_util import get_logger
+from utils.io_util import get_logger
 from .lexer import Lexer
 import os
 

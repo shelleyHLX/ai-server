@@ -8,7 +8,7 @@ import time
 import base64
 import parrots
 
-from util.io_util import get_logger
+from utils.io_util import get_logger
 
 logger = get_logger(__file__)
 

@@ -3,7 +3,7 @@
 # Brief: 
 import numpy as np
 
-from util.math_util import cos_dist
+from utils.math_util import cos_dist
 from .lexer import Lexer
 from .word_emb import WordEmb
 

@@ -6,8 +6,8 @@
 import cv2
 import numpy as np
 
-from util.io_util import get_logger
-from util.math_util import hamming_distance
+from utils.io_util import get_logger
+from utils.math_util import hamming_distance
 
 logger = get_logger(__file__)
 

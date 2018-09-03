@@ -11,7 +11,7 @@ from keras.models import load_model
 from model.nlp.keras_data_reader import load_dict
 from model.nlp.keras_data_reader import pad_sequence
 from model.nlp.keras_data_reader import vectorize_words
-from util.io_util import get_logger
+from utils.io_util import get_logger
 
 logger = get_logger(__file__)
 

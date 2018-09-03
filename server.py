@@ -6,7 +6,7 @@ from flask_cors import CORS
 
 from app.controller import Controller
 from config import ModelType
-from util.io_util import get_logger
+from utils.io_util import get_logger
 
 default_logger = get_logger(__file__)
 # define the app

@@ -9,7 +9,7 @@ import os
 import cv2
 import numpy as np
 
-from util.io_util import get_logger
+from utils.io_util import get_logger
 
 logger = get_logger(__file__)
 

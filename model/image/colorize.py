@@ -13,7 +13,7 @@ from keras.preprocessing.image import img_to_array, load_img
 from skimage.color import rgb2lab, lab2rgb
 from skimage.io import imsave
 
-from util.io_util import get_logger
+from utils.io_util import get_logger
 
 logger = get_logger(__file__)
 

@@ -48,3 +48,19 @@ def hamming_distance(hash1, hash2):
         if hash1[index] != hash2[index]:
             num += 1
     return num
+
+
+def get_pairs(input_lst):
+    """
+    get pair data
+    :param input_lst: ['a','b','c']
+    :return: [['a', 'b'], ['a', 'c'], ['b', 'c']]
+    """
+    out_lst = []
+    for i in range(len(input_lst)):
+        m = input_lst[i]
+        for j in range(i, len(input_lst)):
+            n = input_lst[j]
+            if m == n: continue
+            out_lst.append([m, n])
+    return out_lst

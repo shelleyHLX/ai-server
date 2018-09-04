@@ -144,7 +144,10 @@ class API(object):
             check_ret = self.image_compare_model.check(input_data)
             logger.info(check_ret)
             if check_ret:
-                out = 'similarity score:' + str(check_ret['score'])
+                items = check_ret['items']
+                for item in items:
+                    out += item['input_image1_path'] + ' vs ' + item['input_image2_path'] \
+                           + '=> similarity score:' + str(item['score']) + '\n'
         elif self.model_type == ModelType.colorize_api:
             check_ret = self.colorize_model.check(input_data)
             logger.info(check_ret)

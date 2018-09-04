@@ -106,8 +106,8 @@
         };
 
         btn.onclick = function () {
-            if (dataArr.length != 2) {
-                return alert('请选择2个文件');
+            if (dataArr.length < 2) {
+                return alert('请最少选择2个文件');
             }
             api_call(dataArr);
             input = "";

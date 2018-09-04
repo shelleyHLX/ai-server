@@ -12,7 +12,7 @@ import numpy as np
 
 from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
-from utils.math_util import hamming_distance
+from utils.math_util import hamming_distance, get_pairs
 
 logger = get_logger(__file__)
 
@@ -74,16 +74,40 @@ class Compare(object):
         score = (8 * 8 - distance) / (8 * 8)
         return score
 
-    def check_file(self, input_image1_path, input_image2_path):
+    def check_file(self, input_image_paths):
         """
         Args:
-            input_image1_path: (string)
-            input_image2_path: (string)
+            input_image_paths: path [string1, string2 ... ]
+        Returns:
+        {
+            "log_id": 3591049593939822907,
+            "items": [
+                {
+                    "score": 0.877436,
+                    "input_image1_path":
+                    "input_image2_path":
+                },
+                {
+                    "score": 0.793682,
+                    "input_image1_path":
+                    "input_image2_path":
+                },
+            ],
+        }
         """
-        result_dict = {"input_image1_path": input_image1_path,
-                       'input_image2_path': input_image2_path}
-        similar_score = self.sim_score(input_image1_path, input_image2_path)
-        result_dict['score'] = similar_score
+        if len(input_image_paths) < 2:
+            return None
+        result_dict = {"input_image_path": '\t'.join(input_image_paths)}
+        items = []
+        for pair in get_pairs(input_image_paths):
+            input_image1_path = pair[0]
+            input_image2_path = pair[1]
+            item = {"input_image1_path": input_image1_path,
+                    'input_image2_path': input_image2_path}
+            similar_score = self.sim_score(input_image1_path, input_image2_path)
+            item['score'] = similar_score
+            items.append(item)
+        result_dict['items'] = items
         return result_dict
 
     def check(self, input_images_base64):
@@ -91,34 +115,35 @@ class Compare(object):
         Args:
             input_images_base64: (string)
         Returns:
-         {
-            "log_id": "12345",
-            "input": path,
-            "score": score
+        {
+            "log_id": 3591049593939822907,
+            "items": [
+                {
+                    "score": 0.877436,
+                    "input_image1_path":
+                    "input_image2_path":
+                },
+                {
+                    "score": 0.793682,
+                    "input_image1_path":
+                    "input_image2_path":
+                },
+            ],
         }
         """
         input_images_base64 = input_images_base64.split('\t')
-        if len(input_images_base64) == 2:
-            input_image1_base64 = input_images_base64[0]
-            input_image2_base64 = input_images_base64[1]
-        else:
-            return None
-
-        input_image1_base64, suffix1 = get_suffix_base64(input_image1_base64)
-        input_image1 = base64.b64decode(input_image1_base64)
-        now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
         path = os.path.join(self.pwd_path, '../../upload/', self.name)
         if not os.path.exists(path):
             os.makedirs(path)
-        input_image1_path = os.path.join(path, now + '.' + suffix1)
-        with open(input_image1_path, 'wb') as f:
-            f.write(input_image1)
 
-        input_image2_base64, suffix2 = get_suffix_base64(input_image2_base64)
-        input_image2 = base64.b64decode(input_image2_base64)
-        now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
-        input_image2_path = os.path.join(path, now + '.' + suffix2)
-        with open(input_image2_path, 'wb') as f:
-            f.write(input_image2)
+        input_image_paths = []
+        for input_image_base64 in input_images_base64:
+            input_image_base64, suffix1 = get_suffix_base64(input_image_base64)
+            input_img = base64.b64decode(input_image_base64)
+            now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+            img_path = os.path.join(path, now + '.' + suffix1)
+            with open(img_path, 'wb') as f:
+                f.write(input_img)
+            input_image_paths.append(img_path)
 
-        return self.check_file(input_image1_path, input_image2_path)
+        return self.check_file(input_image_paths)

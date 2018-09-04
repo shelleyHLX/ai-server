@@ -4,6 +4,7 @@
 @description: 
 """
 import base64
+import os
 import time
 
 import cv2
@@ -20,6 +21,7 @@ class QualityAduit(object):
     def __init__(self):
         self.name = 'quality_audit'
         self.model = cv2
+        self.pwd_path = os.path.abspath(os.path.dirname(__file__))
 
     @classmethod
     def get_instance(cls):
@@ -79,7 +81,10 @@ class QualityAduit(object):
         input_image_base64, suffix = get_suffix_base64(input_image_base64)
         input_image = base64.b64decode(input_image_base64)
         now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
-        input_image_path = now + '.' + suffix
+        path = os.path.join(self.pwd_path, '../../upload/', self.name)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        input_image_path = os.path.join(path, now + '.' + suffix)
         with open(input_image_path, 'wb') as f:
             f.write(input_image)
         return self.check_file(input_image_path, clear_threshold)

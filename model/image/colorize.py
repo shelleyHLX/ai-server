@@ -77,10 +77,10 @@ class Colorize(object):
     def __init__(self, model_path):
         self.name = 'image_colorize'
         self.model = build_model()
+        self.pwd_path = os.path.abspath(os.path.dirname(__file__))
         if model_path:
             try:
-                pwd_path = os.path.abspath(os.path.dirname(__file__))
-                model_path = os.path.join(pwd_path, '../..', model_path)
+                model_path = os.path.join(self.pwd_path, '../..', model_path)
                 self.model.load_weights(model_path)
             except ValueError:
                 self.model.load_weights(model_path)
@@ -97,15 +97,18 @@ class Colorize(object):
             return obj
 
     def colorize_image(self, input_image_path):
-        # 加载图片
-        x, y, image_shape = get_train_data(input_image_path)
-        with self.graph.as_default():
-            predict_lab = self.model.predict(x)
-        predict_lab *= 128
-        predict_arr = np.zeros((200, 200, 3))
-        predict_arr[:, :, 0] = x[0][:, :, 0]
-        predict_arr[:, :, 1:] = predict_lab[0]
-        predict_image = lab2rgb(predict_arr)
+        try:
+            # 加载图片
+            x, y, image_shape = get_train_data(input_image_path)
+            with self.graph.as_default():
+                predict_lab = self.model.predict(x)
+            predict_lab *= 128
+            predict_arr = np.zeros((200, 200, 3))
+            predict_arr[:, :, 0] = x[0][:, :, 0]
+            predict_arr[:, :, 1:] = predict_lab[0]
+            predict_image = lab2rgb(predict_arr)
+        except Exception:
+            raise Exception('predict error.')
         return predict_image
 
     def check_file(self, input_image_path, output_image_path=''):
@@ -149,7 +152,11 @@ class Colorize(object):
         input_image_base64, suffix = get_suffix_base64(input_image_base64)
         input_image = base64.b64decode(input_image_base64)
         now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
-        input_image_path = now + '.' + suffix
+        path = os.path.join(self.pwd_path, '../../upload/', self.name)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        input_image_path = os.path.join(path, now + '.' + suffix)
         with open(input_image_path, 'wb') as f:
             f.write(input_image)
+            logger.info(input_image_path)
         return self.check_file(input_image_path, output_image_path)

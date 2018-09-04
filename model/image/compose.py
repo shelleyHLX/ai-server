@@ -5,13 +5,12 @@
 """
 import base64
 import os
+import time
 
 import cv2
 
-from utils.io_util import get_logger
-import time
 from utils.base64_util import get_suffix_base64
-
+from utils.io_util import get_logger
 
 logger = get_logger(__file__)
 
@@ -21,10 +20,10 @@ class Compose(object):
 
     def __init__(self, model_path, compose_image_path=''):
         self.name = 'image_compose'
-        pwd_path = os.path.abspath(os.path.dirname(__file__))
+        self.pwd_path = os.path.abspath(os.path.dirname(__file__))
         if compose_image_path:
             try:
-                compose_image_path = os.path.join(pwd_path, '../..', compose_image_path)
+                compose_image_path = os.path.join(self.pwd_path, '../..', compose_image_path)
                 self.compose_image = cv2.imread(compose_image_path)
             except IOError:
                 self.compose_image = cv2.imread(compose_image_path)
@@ -33,7 +32,7 @@ class Compose(object):
         if model_path:
             try:
                 # OpenCV人脸识别分类器
-                model_path = os.path.join(pwd_path, '../..', model_path)
+                model_path = os.path.join(self.pwd_path, '../..', model_path)
                 self.model = cv2.CascadeClassifier(model_path)
             except IOError:
                 self.model = cv2.CascadeClassifier(model_path)
@@ -134,7 +133,10 @@ class Compose(object):
         input_image_base64, suffix = get_suffix_base64(input_image_base64)
         input_image = base64.b64decode(input_image_base64)
         now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
-        input_image_path = now + '.' + suffix
+        path = os.path.join(self.pwd_path, '../../upload/', self.name)
+        if not os.path.exists(path):
+            os.makedirs(path)
+        input_image_path = os.path.join(path, now + '.' + suffix)
         with open(input_image_path, 'wb') as f:
             f.write(input_image)
         return self.check_file(input_image_path, output_image_path)

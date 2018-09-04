@@ -18,7 +18,7 @@ input_datas = [
 model = colorize.Colorize(model_path)
 
 for input_data in input_datas:
-    check_ret = model.check(input_data)
+    check_ret = model.check_file(input_data)
     print(check_ret)
     out = check_ret['output']
     print(out)

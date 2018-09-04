@@ -5,10 +5,12 @@
 """
 import base64
 import os
+import time
 
 import cv2
 import numpy as np
 
+from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
 
 logger = get_logger(__file__)
@@ -49,7 +51,7 @@ class Repair(object):
     def save_image(self, output_image_path, img):
         return self.model.imwrite(output_image_path, img)
 
-    def check(self, input_image_path, output_image_path=''):
+    def check_file(self, input_image_path, output_image_path=''):
         """
         Args:
             input_image_path: path(string)
@@ -61,7 +63,8 @@ class Repair(object):
             "output": path
         }
         """
-        result_dict = {'input': input_image_path}
+        result_dict = {"input_image_path": input_image_path}
+
         predict_image = self.repair_image(input_image_path)
         if output_image_path:
             self.save_image(output_image_path, predict_image)
@@ -70,7 +73,27 @@ class Repair(object):
             file_name, suffix = os.path.splitext(file_path)
             output_image_path = os.path.join(dir_path, 'repaired_' + file_name + suffix)
             self.save_image(output_image_path, predict_image)
-        result_dict['output_path'] = output_image_path
+        result_dict['output_image_path'] = output_image_path
         encoded = base64.b64encode(open(output_image_path, 'rb').read())
         result_dict['output_base64'] = encoded.decode('utf-8')
         return result_dict
+
+    def check(self, input_image_base64, output_image_path=''):
+        """
+        Args:
+            input_image_base64: (string)
+            output_image_path: path(string)
+        Returns:
+         {
+            "log_id": "12345",
+            "input": path,
+            "output": path
+        }
+        """
+        input_image_base64, suffix = get_suffix_base64(input_image_base64)
+        input_image = base64.b64decode(input_image_base64)
+        now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+        input_image_path = now + '.' + suffix
+        with open(input_image_path, 'wb') as f:
+            f.write(input_image)
+        return self.check_file(input_image_path, output_image_path)

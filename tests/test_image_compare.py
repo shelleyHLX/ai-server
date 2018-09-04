@@ -13,7 +13,7 @@ input_datas = [
 model = compare.Compare()
 
 for input_data in input_datas:
-    check_ret = model.check(input_data[0], input_data[1])
+    check_ret = model.check_file(input_data[0], input_data[1])
     print(check_ret)
     out = check_ret['score']
     print(out)

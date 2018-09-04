@@ -19,7 +19,7 @@ model = prediction.Prediction(model_path)
 
 for input_data in input_datas:
     out = ''
-    check_ret = model.check(input_data)
+    check_ret = model.check_file(input_data)
     print(check_ret)
     items = check_ret['items']
     for item in items:

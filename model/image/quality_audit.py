@@ -3,8 +3,12 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
+import base64
+import time
+
 import cv2
 
+from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
 
 logger = get_logger(__file__)
@@ -36,10 +40,10 @@ class QualityAduit(object):
         variance = self.model.Laplacian(gray, cv2.CV_64F).var()
         return variance
 
-    def check(self, input_image_path, clear_threshold=100):
+    def check_file(self, input_image_path, clear_threshold=100):
         """
         Args:
-            input_image_path: path(string)
+            input_image_path: (string)
             clear_threshold
         Returns:
          {
@@ -48,7 +52,8 @@ class QualityAduit(object):
             "output": path
         }
         """
-        result_dict = {'input': input_image_path}
+        result_dict = {"input_image_path": input_image_path}
+
         clear_score = self.variance_image(input_image_path)
         # if the focus measure is more than the supplied threshold(default:100),
         # then the image should be considered "clear"
@@ -58,3 +63,23 @@ class QualityAduit(object):
         else:
             result_dict['output'] = 'reject'
         return result_dict
+
+    def check(self, input_image_base64, clear_threshold=100):
+        """
+        Args:
+            input_image_base64: (string)
+            clear_threshold
+        Returns:
+         {
+            "log_id": "12345",
+            "input": path,
+            "output": path
+        }
+        """
+        input_image_base64, suffix = get_suffix_base64(input_image_base64)
+        input_image = base64.b64decode(input_image_base64)
+        now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+        input_image_path = now + '.' + suffix
+        with open(input_image_path, 'wb') as f:
+            f.write(input_image)
+        return self.check_file(input_image_path, clear_threshold)

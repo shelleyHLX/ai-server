@@ -19,7 +19,7 @@ input_datas = [
 model = compose.Compose(model_path, compose_image_path=compose_image_path)
 
 for input_data in input_datas:
-    check_ret = model.check(input_data)
+    check_ret = model.check_file(input_data)
     print(check_ret)
-    out = check_ret['output']
+    out = check_ret['output_image_path']
     print(out)

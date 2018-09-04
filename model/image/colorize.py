@@ -5,14 +5,17 @@
 """
 import base64
 import os
+import time
 
 import numpy as np
+import tensorflow as tf
 from keras.layers import Conv2D, UpSampling2D, InputLayer
 from keras.models import Sequential
 from keras.preprocessing.image import img_to_array, load_img
 from skimage.color import rgb2lab, lab2rgb
 from skimage.io import imsave
 
+from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
 
 logger = get_logger(__file__)
@@ -82,6 +85,7 @@ class Colorize(object):
             except ValueError:
                 self.model.load_weights(model_path)
             logger.info("Load %s model ok, path: %s" % (self.name, model_path))
+            self.graph = tf.get_default_graph()
 
     @classmethod
     def get_instance(cls, model_path):
@@ -95,7 +99,8 @@ class Colorize(object):
     def colorize_image(self, input_image_path):
         # 加载图片
         x, y, image_shape = get_train_data(input_image_path)
-        predict_lab = self.model.predict(x)
+        with self.graph.as_default():
+            predict_lab = self.model.predict(x)
         predict_lab *= 128
         predict_arr = np.zeros((200, 200, 3))
         predict_arr[:, :, 0] = x[0][:, :, 0]
@@ -103,7 +108,7 @@ class Colorize(object):
         predict_image = lab2rgb(predict_arr)
         return predict_image
 
-    def check(self, input_image_path, output_image_path=''):
+    def check_file(self, input_image_path, output_image_path=''):
         """
         Args:
             input_image_path: path(string)
@@ -115,7 +120,7 @@ class Colorize(object):
             "output": path
         }
         """
-        result_dict = {'input': input_image_path}
+        result_dict = {"input_image_path": input_image_path}
         predict_image = self.colorize_image(input_image_path)
         if output_image_path:
             imsave(output_image_path, predict_image)
@@ -124,7 +129,27 @@ class Colorize(object):
             file_name, suffix = os.path.splitext(file_path)
             output_image_path = os.path.join(dir_path, 'colorized_' + file_name + suffix)
             imsave(output_image_path, predict_image)
-        result_dict['output_path'] = output_image_path
+        result_dict['output_image_path'] = output_image_path
         encoded = base64.b64encode(open(output_image_path, 'rb').read())
         result_dict['output_base64'] = encoded.decode('utf-8')
         return result_dict
+
+    def check(self, input_image_base64, output_image_path=''):
+        """
+        Args:
+            input_image_base64: string
+            output_image_path: path(string)
+        Returns:
+         {
+            "log_id": "12345",
+            "input": path,
+            "output": path
+        }
+        """
+        input_image_base64, suffix = get_suffix_base64(input_image_base64)
+        input_image = base64.b64decode(input_image_base64)
+        now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+        input_image_path = now + '.' + suffix
+        with open(input_image_path, 'wb') as f:
+            f.write(input_image)
+        return self.check_file(input_image_path, output_image_path)

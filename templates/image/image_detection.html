@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
@@ -14,7 +15,7 @@
         <div class="card text-center bg-light">
             <div class="card-body" style="padding-bottom: 0.2cm">
                 <input class="card-title form-control" type="file" id="input" name="input"/>
-                <button class="card-text btn btn-outline-primary" id="btn">文字识别</button>
+                <button class="card-text btn btn-outline-primary" id="btn">图像检测</button>
                 <div class="spinner" id="spinner" style="display: none">
                     <div class="double-bounce1"></div>
                     <div class="double-bounce2"></div>
@@ -72,7 +73,7 @@
             url: "http://127.0.0.1:5001/image_detection_api",
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(input),
+            data: JSON.stringify($('#input_img').attr('src')),
 
             success: function (data, textStatus, jQxhr) {
                 // toggle the spinner and button
@@ -92,7 +93,7 @@
 
                 console.log(errorThrown);
             },
-            timeout: 5000 // sets timeout to 10 seconds
+            timeout: 50000 // sets timeout to 10 seconds
         });
 
     }

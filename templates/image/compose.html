@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
@@ -15,9 +14,8 @@
     <div style="padding-bottom: 0.5cm">
         <div class="card text-center bg-light">
             <div class="card-body" style="padding-bottom: 0.2cm">
-                <input class="card-title form-control" type="text" id="input" name="input"
-                       placeholder="Input text (like: 北京图书馆）"/>
-                <button class="card-text btn btn-outline-primary" id="btn">语音合成</button>
+                <input class="card-title form-control" type="file" id="input" name="input"/>
+                <button class="card-text btn btn-outline-primary" id="btn">特效合成</button>
                 <div class="spinner" id="spinner" style="display: none">
                     <div class="double-bounce1"></div>
                     <div class="double-bounce2"></div>
@@ -25,10 +23,10 @@
             </div>
             <div class="card-footer bg-white">
                 <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
-                    <div class="item" id="api_input"></div>
-                    <div><audio class="item" controls="controls" autobuffer="autobuffer" autoplay="autoplay"
-                                id="api_output" src="data:audio/wav;base64,"></audio>
-                    </div>
+                    <div><img id="input_img"/></div>
+                </pre>
+                <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
+                    <div><img id="api_output"/></div>
                 </pre>
             </div>
         </div>
@@ -36,6 +34,34 @@
 </div>
 </body>
 
+<script type="text/javascript">
+    $("#input").change(function () {
+        run(this, function (data) {
+            $('#input_img').attr('src', data);
+        });
+    });
+
+    function run(input_file, get_data) {
+        if (typeof (FileReader) === 'undefined') {
+            alert("抱歉，你的浏览器不支持 FileReader，不能将图片转换为Base64，请使用现代浏览器操作！");
+        } else {
+            try {
+                var file = input_file.files[0];
+                if (!/image\/\w+/.test(file.type)) {
+                    alert("请确保文件为图像类型");
+                    return false;
+                }
+                var reader = new FileReader();
+                reader.onload = function () {
+                    get_data(this.result);
+                }
+                reader.readAsDataURL(file);
+            } catch (e) {
+                alert('图片转Base64出错啦！' + e.toString())
+            }
+        }
+    }
+</script>
 
 <script type="text/javascript">
     function api_call(input) {
@@ -44,10 +70,10 @@
         $('#spinner').toggle();
 
         $.ajax({
-            url: "http://127.0.0.1:5001/tts_api",
+            url: "http://127.0.0.1:5001/compose_api",
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(input),
+            data: JSON.stringify($('#input_img').attr('src')),
 
             success: function (data, textStatus, jQxhr) {
                 // toggle the spinner and button
@@ -55,8 +81,7 @@
                 $('#spinner').toggle();
 
                 // fill the html for answer
-                $('#api_input').html(data.input);
-                $('#api_output').attr('src', 'data:audio/x-wav;base64,' + data.output);
+                $('#api_output').attr('src', 'data:image/png;base64,' + data.output);
 
                 $("#input").val("");
             },
@@ -64,8 +89,7 @@
                 $('#btn').toggle();
                 $('#spinner').toggle();
 
-                $('#api_input').html("Sorry, the server is asleep...");
-                $('#api_output').html("Try again in a moment!");
+                $('#api_output').html("Sorry, the server is asleep...\nTry again in a moment!");
 
                 console.log(errorThrown);
             },

@@ -3,9 +3,13 @@
 @author:XuMing（xuming624@qq.com)
 @description: 图像对比，图像相似度计算
 """
+import base64
+import time
+
 import cv2
 import numpy as np
 
+from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
 from utils.math_util import hamming_distance
 
@@ -68,19 +72,48 @@ class Compare(object):
         score = (8 * 8 - distance) / (8 * 8)
         return score
 
-    def check(self, input_image_path1, input_image_path2):
+    def check_file(self, input_image1_path, input_image2_path):
         """
         Args:
-            input_image_path1: path(string)
-            output_image_path2: path(string)
+            input_image1_path: (string)
+            input_image2_path: (string)
+        """
+        result_dict = {"input_image1_path": input_image1_path,
+                       'input_image2_path': input_image2_path}
+        similar_score = self.sim_score(input_image1_path, input_image2_path)
+        result_dict['score'] = similar_score
+        return result_dict
+
+    def check(self, input_images_base64):
+        """
+        Args:
+            input_images_base64: (string)
         Returns:
          {
             "log_id": "12345",
             "input": path,
-            "output": path
+            "score": score
         }
         """
-        result_dict = {'input1': input_image_path1, 'input2': input_image_path2}
-        similar_score = self.sim_score(input_image_path1, input_image_path2)
-        result_dict['score'] = similar_score
-        return result_dict
+        input_images_base64 = input_images_base64.split('\t')
+        if len(input_images_base64) == 2:
+            input_image1_base64 = input_images_base64[0]
+            input_image2_base64 = input_images_base64[1]
+        else:
+            return None
+
+        input_image1_base64, suffix1 = get_suffix_base64(input_image1_base64)
+        input_image1 = base64.b64decode(input_image1_base64)
+        now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+        input_image1_path = now + '.' + suffix1
+        with open(input_image1_path, 'wb') as f:
+            f.write(input_image1)
+
+        input_image2_base64, suffix2 = get_suffix_base64(input_image2_base64)
+        input_image2 = base64.b64decode(input_image2_base64)
+        now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+        input_image2_path = now + '.' + suffix2
+        with open(input_image2_path, 'wb') as f:
+            f.write(input_image2)
+
+        return self.check_file(input_image1_path, input_image2_path)

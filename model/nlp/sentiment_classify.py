@@ -68,7 +68,8 @@ class Sentiment(object):
         probs_dict = dict((idx, prob) for idx, prob in enumerate(probs))
         return probs_dict
 
-    def get_sentiment_confidence(self, pos_prob, pos_threshold=0.65, neg_threshold=0.35):
+    @staticmethod
+    def get_sentiment_confidence(pos_prob, pos_threshold=0.65, neg_threshold=0.35):
         """
         Get sentiment score
         :param pos_prob:

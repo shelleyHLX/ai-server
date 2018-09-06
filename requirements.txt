@@ -2,10 +2,8 @@ jieba
 tensorflow
 keras>=2.1.5
 gensim
-kenlm
 flask
 flask_cors
-pycorrector
 imageai
 pytesseract
 Pillow
@@ -18,3 +16,5 @@ pypinyin
 pydub
 pyaudio
 parrots
+kenlm
+pycorrector

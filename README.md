@@ -18,7 +18,7 @@ server for NLP、CV、Speech AI application.
 - [x] 文章标签
 - [x] 文章分类
 - [x] 文本纠错
-- [] 文本审核
+- [ ] 文本审核
 
 
 ### 计算机视觉（CV）

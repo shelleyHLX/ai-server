@@ -4,10 +4,8 @@ keras>=2.1.5
 gensim
 flask
 flask_cors
-imageai
 pytesseract
 Pillow
-face_recognition
 opencv-python
 scikit-image
 wave
@@ -18,3 +16,6 @@ pyaudio
 parrots
 kenlm
 pycorrector
+imageai
+dlib
+face_recognition

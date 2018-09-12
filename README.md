@@ -60,6 +60,8 @@ http://www.borntowin.cn
 ### 依赖安装
 pip3 install -r requirements.txt
 
+pip3 install https://github.com/OlafenwaMoses/ImageAI/releases/download/2.0.2/imageai-2.0.2-py3-none-any.whl
+
 #### 安装过程记录
 ```
 CentOS 7.5 安装
@@ -111,7 +113,9 @@ sudo yum install python36-devel
 
 
 [问]安装matplotlib库时，找不到tkinter包？
-[答]yum install python3-tk
+[答]yum install -y tkinter
+yum install -y tk-devel
+yum install python36-tkinter
 
 
 [问]出错：nginx: [error] invalid PID number “” in “/usr/local/var/run/nginx/nginx.pid”？

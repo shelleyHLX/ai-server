@@ -103,7 +103,11 @@
         $('#btn').click(function () {
             // get the input data
             var input = $("#input").val();
-            api_call(input);
+            if (input === "") {
+                alert("请先选择文件");
+            } else {
+                api_call(input);
+            }
             input = "";
         });
     });

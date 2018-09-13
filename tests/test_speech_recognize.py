@@ -3,13 +3,13 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
-from model.speech import speech_recognition
+from model.speech import asr
 
 input_datas = [
     '../data/speechs/16k.wav',
     '../data/speechs/16k.wav',
 ]
-model = speech_recognition.SpeechRecognition()
+model = asr.ASR()
 
 for input_data in input_datas:
     check_ret = model.check_file(input_data)

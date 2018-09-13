@@ -3,23 +3,25 @@
 @author:XuMing（xuming624@qq.com)
 @description: 
 """
+import base64
 import os
 import time
-import base64
+
 import parrots
 
 from utils.io_util import get_logger
+from utils.string_util import rename_path
 
 logger = get_logger(__file__)
 
 
-class TextToSpeech(object):
+class TTS(object):
     model = None
 
     def __init__(self, model_path):
         self.name = 'text_to_speech'
-        pwd_path = os.path.abspath(os.path.dirname(__file__))
-        model_path = os.path.join(pwd_path, '../../', model_path)
+        self.pwd_path = os.path.abspath(os.path.dirname(__file__))
+        model_path = os.path.join(self.pwd_path, '../..', model_path)
         self.model = parrots.TextToSpeech(syllables_dir=model_path)
         logger.info("Load TextToSpeech parrots_model ok, path: " + model_path)
 
@@ -46,7 +48,7 @@ class TextToSpeech(object):
     def speak(self, input_text):
         self.model.speak(input_text)
 
-    def check(self, input_text, output_voc_path='out.wav'):
+    def check(self, input_text, output_voc_path=''):
         """
         Args:
             input_text: text
@@ -64,11 +66,15 @@ class TextToSpeech(object):
             self.text_2_speech(input_text, output_voc_path)
         else:
             suffix = '.wav'
-            output_voc_path = os.path.join(os.path.curdir,
-                                           'synthesis_' + input_text[:2] + str(time.time())[-3:] + suffix)
+            now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
+            path = os.path.join(self.pwd_path, '../../upload/', self.name)
+            if not os.path.exists(path):
+                os.makedirs(path)
+            output_voc_path = os.path.join(path, now + suffix)
+            output_voc_path = rename_path(output_voc_path, prefix='synthesis_')
             self.text_2_speech(input_text, output_voc_path)
-        voc_f = open(output_voc_path, 'rb')
-        encoded = base64.b64encode(voc_f.read())
-        result_dict['output_base64'] = encoded.decode('utf-8')
+        with open(output_voc_path, 'rb') as voc_f:
+            encoded = base64.b64encode(voc_f.read())
+            result_dict['output_base64'] = encoded.decode('utf-8')
         result_dict['output_path'] = output_voc_path
         return result_dict

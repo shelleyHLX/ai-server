@@ -8,7 +8,7 @@ from model.image import ocr, colorize, compose, detection, face_makeup, \
     prediction, quality_audit, repair, compare
 from model.nlp import corrector, sentiment_classify, short_text_sim, \
     keyword, lm, word_emb_sim, topic, word_emb, lexer
-from model.speech import text_to_speech, speech_recognition
+from model.speech import tts, asr
 from utils.io_util import get_logger
 
 logger = get_logger(__file__)
@@ -29,8 +29,8 @@ class API(object):
                                                                          config.sentiment_word_dict_path)
         self.corrector_model = corrector.Corrector.get_instance()
         # speech
-        self.tts_model = text_to_speech.TextToSpeech.get_instance(model_path=config.syllables_dir)
-        self.speech_recognition_model = speech_recognition.SpeechRecognition.get_instance()
+        self.tts_model = tts.TTS.get_instance(model_path=config.syllables_dir)
+        self.speech_recognition_model = asr.ASR.get_instance()
         # image
         self.ocr_basic_model = ocr.Ocr.get_instance()
         self.image_prediction_model = prediction.Prediction.get_instance(model_path=config.image_prediction)
@@ -47,48 +47,48 @@ class API(object):
         out = ''
         if self.model_type == ModelType.lexer_api:
             check_ret = self.lexer_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 items = check_ret['items']
                 for item in items:
                     out += item['item'] + '/' + item['pos'] + ' '
         elif self.model_type == ModelType.lm_api:
             check_ret = self.lm_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = 'ppl: ' + str(check_ret['ppl'])
         elif self.model_type == ModelType.word_emb_api:
             check_ret = self.word_emb_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = 'vec: ' + str(check_ret['vec'])
         elif self.model_type == ModelType.word_emb_sim_api:
             check_ret = self.word_emb_sim_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = 'score: ' + str(check_ret['score'])
         elif self.model_type == ModelType.short_text_sim_api:
             check_ret = self.short_text_sim_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = 'score: ' + str(check_ret['score'])
         elif self.model_type == ModelType.keyword_api:
             check_ret = self.keyword_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 items = check_ret['items']
                 for item in items:
                     out += item['tag'] + ' '
         elif self.model_type == ModelType.topic_api:
             check_ret = self.topic_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 items = check_ret['items']
                 for item in items:
                     out += item['tag'] + '/' + str(item['score']) + ' '
         elif self.model_type == ModelType.sentiment_classify_api:
             check_ret = self.sentiment_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 items = check_ret['items']
                 for item in items:
@@ -96,71 +96,71 @@ class API(object):
                           str(item['positive_prob']) + ' negative_prob:' + str(item['negative_prob'])
         elif self.model_type == ModelType.corrector_api:
             check_ret = self.corrector_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = 'corrected text:' + str(check_ret['corrected_text'])
         elif self.model_type == ModelType.tts_api:
             check_ret = self.tts_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = check_ret['output_base64']
         elif self.model_type == ModelType.speech_recognition_api:
             check_ret = self.speech_recognition_model.check(input_data)
             # check_ret = asr.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = check_ret['output']
         elif self.model_type == ModelType.ocr_basic_api:
             check_ret = self.ocr_basic_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 items = check_ret['items']
                 for item in items:
                     out += item['name'] + '\n'
         elif self.model_type == ModelType.image_prediction_api:
             check_ret = self.image_prediction_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 items = check_ret['items']
                 for item in items:
-                    out += item['name'] + '/' + str(item['score']) + ' '
+                    out += item['name'] + '/' + str(item['score']) + '\n'
         elif self.model_type == ModelType.image_detection_api:
             check_ret = self.image_detection_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 items = check_ret['items']
                 for item in items:
-                    out += item['name'] + '/' + str(item['score']) + ' '
+                    out += item['name'] + '/' + str(item['score']) + '\n'
         elif self.model_type == ModelType.image_repair_api:
             check_ret = self.image_repair_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = check_ret['output_base64']
         elif self.model_type == ModelType.image_quality_api:
             check_ret = self.image_quality_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = 'clarity:' + str(check_ret['clarity']) + '\t' + check_ret['output']
         elif self.model_type == ModelType.image_compare_api:
             check_ret = self.image_compare_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 items = check_ret['items']
                 for item in items:
                     out += 'similarity score:' + str(item['score']) + '\n'
         elif self.model_type == ModelType.colorize_api:
             check_ret = self.colorize_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = check_ret['output_base64']
         elif self.model_type == ModelType.compose_api:
             check_ret = self.compose_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = check_ret['output_base64']
         elif self.model_type == ModelType.face_makeup_api:
             check_ret = self.face_makeup_model.check(input_data)
-            logger.info(check_ret)
+            logger.debug(check_ret)
             if check_ret:
                 out = check_ret['output_base64']
         return out

@@ -11,8 +11,8 @@ import time
 import tensorflow as tf
 from imageai.Prediction import ImagePrediction
 
-from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
+from utils.string_util import get_suffix_base64, resize_img, rename_path
 
 logger = get_logger(__file__)
 
@@ -25,17 +25,17 @@ class Prediction(object):
         self.model = ImagePrediction()
         self.model.setModelTypeAsResNet()
         self.pwd_path = os.path.abspath(os.path.dirname(__file__))
-        # load model by file
+        # load parrots_model by file
         if model_path:
             try:
                 model_path = os.path.join(self.pwd_path, '../..', model_path)
                 self.model.setModelPath(model_path)
             except ValueError:
                 self.model.setModelPath(model_path)
-            logger.info("Load model ok, path: " + model_path)
+            logger.info("Load parrots_model ok, path: " + model_path)
         else:
-            logger.error('model file is need.')
-            raise Exception('model file need.')
+            logger.error('parrots_model file is need.')
+            raise Exception('parrots_model file need.')
         self.model.loadModel()
         self.graph = tf.get_default_graph()
 
@@ -110,4 +110,8 @@ class Prediction(object):
         input_image_path = os.path.join(path, now + '.' + suffix)
         with open(input_image_path, 'wb') as f:
             f.write(input_image)
-        return self.check_file(input_image_path)
+            logger.debug(input_image_path)
+        resize_img_path = rename_path(input_image_path, prefix='resize_')
+        resize_img(input_image_path, resize_img_path)
+
+        return self.check_file(resize_img_path)

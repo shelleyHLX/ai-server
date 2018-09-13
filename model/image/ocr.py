@@ -10,8 +10,8 @@ import time
 import pytesseract
 from PIL import Image
 
-from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
+from utils.string_util import get_suffix_base64, resize_img, rename_path
 
 logger = get_logger(__file__)
 
@@ -86,4 +86,8 @@ class Ocr(object):
         input_image_path = os.path.join(path, now + '.' + suffix)
         with open(input_image_path, 'wb') as f:
             f.write(input_image)
-        return self.check_file(input_image_path, lang)
+            logger.debug(input_image_path)
+        resize_img_path = rename_path(input_image_path, prefix='resize_')
+        resize_img(input_image_path, resize_img_path)
+
+        return self.check_file(resize_img_path, lang)

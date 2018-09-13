@@ -8,7 +8,7 @@ secret_key = [
 ]
 
 
-# api model type
+# api parrots_model type
 class ModelType(object):
     # nlp
     lexer_api = "lexer"
@@ -39,17 +39,17 @@ class ModelType(object):
 # custom dict for segment
 custom_dict_path = './data/custom_words.txt'
 
-# kenlm language model
+# kenlm language parrots_model
 language_model_path = './data/people_chars_lm.klm'
 
 # word embedding file path
 emb_path = './data/sentence_w2v.bin'
 
-# topic model
+# topic parrots_model
 topic_model_path = './data/mcnn_model.h5'
 topic_word_dict_path = './data/mcnn_vocab.txt'
 
-# sentiment classify model
+# sentiment classify parrots_model
 sentiment_model_path = './data/sentiment_hotel_model.h5'
 sentiment_word_dict_path = './data/sentiment_hotel_vocab.txt'
 

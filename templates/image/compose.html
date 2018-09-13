@@ -15,16 +15,14 @@
         <div class="card text-center bg-light">
             <div class="card-body" style="padding-bottom: 0.2cm">
                 <input class="card-title form-control" type="file" id="input" name="input"/>
-                <button class="card-text btn btn-outline-primary" id="btn">特效合成</button>
+                <button class="card-text btn btn-outline-primary" id="btn">头像带帽</button>
                 <div class="spinner" id="spinner" style="display: none">
                     <div class="double-bounce1"></div>
                     <div class="double-bounce2"></div>
                 </div>
             </div>
             <div class="card-footer bg-white">
-                <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
-                    <div><img id="input_img"/></div>
-                </pre>
+                <img id="input_img" width="200" height="200">
                 <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
                     <div><img id="api_output"/></div>
                 </pre>
@@ -93,7 +91,7 @@
 
                 console.log(errorThrown);
             },
-            timeout: 10000 // sets timeout to 10 seconds
+            timeout: 30000 // sets timeout to 10 seconds
         });
 
     }

@@ -35,19 +35,19 @@ class Topic(object):
                 word_dict_path = os.path.join(pwd_path, '../..', word_dict_path)
                 self.word_ids_dict = load_dict(word_dict_path)
 
-        # load model by file
+        # load parrots_model by file
         if model_path:
             try:
                 self.topic_model = load_model(model_path)
             except IOError:
                 model_path = os.path.join(pwd_path, '../..', model_path)
                 self.topic_model = load_model(model_path)
-            logger.info("Load model ok, path: " + model_path)
+            logger.info("Load parrots_model ok, path: " + model_path)
             # self.topic_model._make_predict_function()  # have to initialize before threading
             self.graph = tf.get_default_graph()
         else:
-            logger.warn('model file is need')
-            raise Exception('model file need')
+            logger.warn('parrots_model file is need')
+            raise Exception('parrots_model file need')
 
     @classmethod
     def get_instance(cls, model_path, word_dict_path, maxlen=400):

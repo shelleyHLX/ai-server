@@ -9,8 +9,8 @@ import time
 
 import cv2
 
-from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
+from utils.string_util import get_suffix_base64, resize_img, rename_path
 
 logger = get_logger(__file__)
 
@@ -28,7 +28,7 @@ class Compose(object):
             except IOError:
                 self.compose_image = cv2.imread(compose_image_path)
 
-        # load model by file
+        # load parrots_model by file
         if model_path:
             try:
                 # OpenCV人脸识别分类器
@@ -36,10 +36,10 @@ class Compose(object):
                 self.model = cv2.CascadeClassifier(model_path)
             except IOError:
                 self.model = cv2.CascadeClassifier(model_path)
-            logger.info("Load model ok, path: " + model_path)
+            logger.info("Load parrots_model ok, path: " + model_path)
         else:
-            logger.warn('model file need')
-            raise Exception('model file need')
+            logger.warn('parrots_model file need')
+            raise Exception('parrots_model file need')
 
     @classmethod
     def get_instance(cls, model_path, compose_image_path):
@@ -139,5 +139,8 @@ class Compose(object):
         input_image_path = os.path.join(path, now + '.' + suffix)
         with open(input_image_path, 'wb') as f:
             f.write(input_image)
-        return self.check_file(input_image_path, output_image_path)
+            logger.debug(input_image_path)
+        resize_img_path = rename_path(input_image_path, prefix='resize_')
+        resize_img(input_image_path, resize_img_path)
+        return self.check_file(resize_img_path, output_image_path)
 

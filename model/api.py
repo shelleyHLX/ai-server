@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Author: XuMing <xuming624@qq.com>
-# Brief: api for model
+# Brief: api for parrots_model
 
 import config
 from config import ModelType
@@ -106,6 +106,7 @@ class API(object):
                 out = check_ret['output_base64']
         elif self.model_type == ModelType.speech_recognition_api:
             check_ret = self.speech_recognition_model.check(input_data)
+            # check_ret = asr.check(input_data)
             logger.info(check_ret)
             if check_ret:
                 out = check_ret['output']
@@ -146,8 +147,7 @@ class API(object):
             if check_ret:
                 items = check_ret['items']
                 for item in items:
-                    out += item['input_image1_path'] + ' vs ' + item['input_image2_path'] \
-                           + '=> similarity score:' + str(item['score']) + '\n'
+                    out += 'similarity score:' + str(item['score']) + '\n'
         elif self.model_type == ModelType.colorize_api:
             check_ret = self.colorize_model.check(input_data)
             logger.info(check_ret)

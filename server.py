@@ -17,7 +17,7 @@ api_key = None
 
 
 def process_request_json(input_data, model_type=ModelType.lexer_api):
-    default_logger.info("api_input: " + input_data)
+    # default_logger.info("api_input: " + input_data)
     controller = Controller(model_type=model_type, require_auth=False)
     output_data = controller.output(input_data)
     default_logger.info("api_output: " + output_data['output'])

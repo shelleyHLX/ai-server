@@ -15,8 +15,8 @@ from keras.preprocessing.image import img_to_array, load_img
 from skimage.color import rgb2lab, lab2rgb
 from skimage.io import imsave
 
-from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
+from utils.string_util import get_suffix_base64, resize_img, rename_path
 
 logger = get_logger(__file__)
 
@@ -84,7 +84,7 @@ class Colorize(object):
                 self.model.load_weights(model_path)
             except ValueError:
                 self.model.load_weights(model_path)
-            logger.info("Load %s model ok, path: %s" % (self.name, model_path))
+            logger.info("Load %s parrots_model ok, path: %s" % (self.name, model_path))
             self.graph = tf.get_default_graph()
 
     @classmethod
@@ -128,9 +128,7 @@ class Colorize(object):
         if output_image_path:
             imsave(output_image_path, predict_image)
         else:
-            dir_path, file_path = os.path.split(input_image_path)
-            file_name, suffix = os.path.splitext(file_path)
-            output_image_path = os.path.join(dir_path, 'colorized_' + file_name + suffix)
+            output_image_path = rename_path(input_image_path, prefix='colorized_')
             imsave(output_image_path, predict_image)
         result_dict['output_image_path'] = output_image_path
         encoded = base64.b64encode(open(output_image_path, 'rb').read())
@@ -158,5 +156,7 @@ class Colorize(object):
         input_image_path = os.path.join(path, now + '.' + suffix)
         with open(input_image_path, 'wb') as f:
             f.write(input_image)
-            logger.info(input_image_path)
-        return self.check_file(input_image_path, output_image_path)
+            logger.debug(input_image_path)
+        resize_img_path = rename_path(input_image_path, prefix='resize_')
+        resize_img(input_image_path, resize_img_path)
+        return self.check_file(resize_img_path, output_image_path)

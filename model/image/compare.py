@@ -10,9 +10,9 @@ import time
 import cv2
 import numpy as np
 
-from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
 from utils.math_util import hamming_distance, get_pairs
+from utils.string_util import get_suffix_base64, resize_img, rename_path
 
 logger = get_logger(__file__)
 
@@ -141,9 +141,11 @@ class Compare(object):
             input_image_base64, suffix1 = get_suffix_base64(input_image_base64)
             input_img = base64.b64decode(input_image_base64)
             now = time.strftime('%Y%m%d%H%M%S', time.localtime(time.time()))
-            img_path = os.path.join(path, now + '.' + suffix1)
-            with open(img_path, 'wb') as f:
+            input_image_path = os.path.join(path, now + '.' + suffix1)
+            with open(input_image_path, 'wb') as f:
                 f.write(input_img)
-            input_image_paths.append(img_path)
+            resize_img_path = rename_path(input_image_path, prefix='resize_')
+            resize_img(input_image_path, resize_img_path)
+            input_image_paths.append(resize_img_path)
 
         return self.check_file(input_image_paths)

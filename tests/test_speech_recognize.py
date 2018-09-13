@@ -7,6 +7,7 @@ from model.speech import speech_recognition
 
 input_datas = [
     '../data/speechs/16k.wav',
+    '../data/speechs/16k.wav',
 ]
 model = speech_recognition.SpeechRecognition()
 

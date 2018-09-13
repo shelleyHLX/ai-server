@@ -38,7 +38,7 @@
 <script type="text/javascript">
     window.onload = function () {
         var input = document.getElementById("input");
-        var btn = document.getElementById("btn")
+        var btn = document.getElementById("btn");
         var result;
         var dataArr = []; // 储存所选图片的结果(文件名和base64数据)
         var fd;  //FormData方式发送请求
@@ -106,8 +106,8 @@
         };
 
         btn.onclick = function () {
-            if (dataArr.length < 2) {
-                return alert('请最少选择2个文件');
+            if (dataArr.length !== 2) {
+                return alert('请重新选择2个文件');
             }
             api_call(dataArr);
             input = "";

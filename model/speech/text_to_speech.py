@@ -21,7 +21,7 @@ class TextToSpeech(object):
         pwd_path = os.path.abspath(os.path.dirname(__file__))
         model_path = os.path.join(pwd_path, '../../', model_path)
         self.model = parrots.TextToSpeech(syllables_dir=model_path)
-        logger.info("Load TextToSpeech model ok, path: " + model_path)
+        logger.info("Load TextToSpeech parrots_model ok, path: " + model_path)
 
     @classmethod
     def get_instance(cls, model_path):

@@ -10,8 +10,8 @@ import time
 
 import parrots
 
-from utils.base64_util import get_suffix_base64
 from utils.io_util import get_logger
+from utils.string_util import get_suffix_base64
 
 logger = get_logger(__file__)
 

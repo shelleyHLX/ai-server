@@ -61,6 +61,7 @@ def get_pairs(input_lst):
         m = input_lst[i]
         for j in range(i, len(input_lst)):
             n = input_lst[j]
-            if m == n: continue
+            if m == n:
+                continue
             out_lst.append([m, n])
     return out_lst

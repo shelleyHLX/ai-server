@@ -25,10 +25,18 @@ def get_suffix_base64(raw_base64):
     return code, suffix
 
 
-def resize_img(input_image_path, output_image_path, size=(200, 200)):
+def resize_img(input_image_path, output_image_path, width=400, height=400):
     img = Image.open(input_image_path)
+    w, h = img.size
     try:
-        new_img = img.resize(size)
+        if w <= width and h <= height:
+            new_img = img
+        elif 1.0 * w / width > 1.0 * h / height:
+            scale = 1.0 * w / width
+            new_img = img.resize((int(w / scale), int(h / scale)), Image.ANTIALIAS)
+        else:
+            scale = 1.0 * h / height
+            new_img = img.resize((int(w / scale), int(h / scale)), Image.ANTIALIAS)
         new_img.save(output_image_path)
         logger.debug('resize to:' + output_image_path)
     except Exception as e:

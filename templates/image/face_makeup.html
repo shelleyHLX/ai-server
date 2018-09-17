@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="card-footer bg-white">
-                <img id="input_img" width="200" height="200">
+                <img id="input_img" width="400">
                 <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
                     <div><img id="api_output"/></div>
                 </pre>
@@ -68,7 +68,7 @@
         $('#spinner').toggle();
 
         $.ajax({
-            url: "http://127.0.0.1:5001/face_makeup_api",
+            url: 'http://' + document.domain + ':5001/face_makeup_api',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify($('#input_img').attr('src')),

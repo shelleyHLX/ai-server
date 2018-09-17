@@ -22,7 +22,7 @@
                 </div>
             </div>
             <div class="card-footer bg-white">
-                <img id="input_img" width="200" height="200">
+                <img id="input_img" width="400">
 
                 <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
                     <div><img id="api_output"/></div>
@@ -67,9 +67,8 @@
         // hide button and make the spinner appear
         $('#btn').toggle();
         $('#spinner').toggle();
-
         $.ajax({
-            url: "http://127.0.0.1:5001/colorize_api",
+            url: 'http://' + document.domain + ':5001/colorize_api',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify($('#input_img').attr('src')),

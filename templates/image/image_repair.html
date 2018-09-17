@@ -22,7 +22,7 @@
             </div>
             <div class="card-footer bg-white">
                 <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
-                    <div><img id="input_img" width="200" height="200"></div>
+                    <div><img id="input_img" width="400"></div>
                 </pre>
                 <pre class="card-text api-pre" style="padding-bottom: 0.2cm">
                     <div><img id="api_output"/></div>
@@ -69,7 +69,8 @@
         $('#spinner').toggle();
 
         $.ajax({
-            url: "http://127.0.0.1:5001/image_repair_api",
+            //url: "http://127.0.0.1:5001/image_repair_api",
+            url: 'http://' + document.domain + ':5001/image_repair_api',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify($('#input_img').attr('src')),

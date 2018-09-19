@@ -84,7 +84,7 @@ class Colorize(object):
                 self.model.load_weights(model_path)
             except ValueError:
                 self.model.load_weights(model_path)
-            logger.info("Load %s parrots_model ok, path: %s" % (self.name, model_path))
+            logger.info("Load %s model ok, path: %s" % (self.name, model_path))
             self.graph = tf.get_default_graph()
 
     @classmethod

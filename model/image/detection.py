@@ -32,10 +32,10 @@ class Detection(object):
                 self.model.setModelPath(model_path)
             except ValueError:
                 self.model.setModelPath(model_path)
-            logger.info("Load parrots_model ok, path: " + model_path)
+            logger.info("Load image_detection ok, path: " + model_path)
         else:
-            logger.error('parrots_model file is need')
-            raise Exception('parrots_model file need')
+            logger.error('image_detection file is need')
+            raise Exception('image_detection file need')
         self.model.loadModel()
         self.graph = tf.get_default_graph()
 

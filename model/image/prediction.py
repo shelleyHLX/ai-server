@@ -32,10 +32,10 @@ class Prediction(object):
                 self.model.setModelPath(model_path)
             except ValueError:
                 self.model.setModelPath(model_path)
-            logger.info("Load parrots_model ok, path: " + model_path)
+            logger.info("Load ImagePrediction ok, path: " + model_path)
         else:
-            logger.error('parrots_model file is need.')
-            raise Exception('parrots_model file need.')
+            logger.error('ImagePrediction file is need.')
+            raise Exception('ImagePrediction file need.')
         self.model.loadModel()
         self.graph = tf.get_default_graph()
 

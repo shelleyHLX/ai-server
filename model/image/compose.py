@@ -36,10 +36,10 @@ class Compose(object):
                 self.model = cv2.CascadeClassifier(model_path)
             except IOError:
                 self.model = cv2.CascadeClassifier(model_path)
-            logger.info("Load parrots_model ok, path: " + model_path)
+            logger.info("Load image_compose ok, path: " + model_path)
         else:
-            logger.warn('parrots_model file need')
-            raise Exception('parrots_model file need')
+            logger.warn('image_compose file need')
+            raise Exception('image_compose file need')
 
     @classmethod
     def get_instance(cls, model_path, compose_image_path):

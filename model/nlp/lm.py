@@ -23,9 +23,9 @@ class LM(Lexer):
                 pwd_path = os.path.abspath(os.path.dirname(__file__))
                 language_model_path = os.path.join(pwd_path, '../../', language_model_path)
                 self.model = kenlm.Model(language_model_path)
-            logger.info('Loaded language lexer_model from {}'.format(language_model_path))
+            logger.info('Loaded language model from {}'.format(language_model_path))
         else:
-            raise Exception('lm lexer_model need')
+            raise Exception('lm model need')
 
     @classmethod
     def get_instance(cls, language_model_path=None):

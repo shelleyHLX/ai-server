@@ -72,7 +72,7 @@
 
         $.ajax({
             //url: "http://127.0.0.1:5001/ocr_basic_api",
-            url: 'http://' + document.domain + ':5001/face_makeup_api',
+            url: 'http://' + document.domain + ':5001/ocr_basic_api',
             method: 'POST',
             contentType: 'application/json',
             data: JSON.stringify($('#input_img').attr('src')),
